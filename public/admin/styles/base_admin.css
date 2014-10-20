@@ -1,0 +1,235 @@
+/*  Login */
+.div-login { margin:0 auto !important; text-align:center; background-color: #FFF; }
+.x-panel-footer { border-top: 1px #D0D0D0 solid; }
+
+/* Topo */
+#panel-topo {
+	position: absolute;
+	top: -1px;
+	right: 1px;
+	font: 11px arial,tahoma,helvetica;
+	color: #333333;
+	cursor: default;
+	width: 400px;
+}
+
+#btn-topo .x-toolbar {
+	padding: 1px !important;
+	margin-top: 1px !important;
+	height: 22px;
+	_height: 23px !important;
+	border:none;
+}
+
+/*  Rodapé */
+#app-statusbar .padrao { vertical-align:top; padding-bottom:2px; }
+#app-statusbar a.byvm2 { color: #000000; text-decoration: none; }
+#app-statusbar a:hover { text-decoration: underline; }
+
+/* Geral */
+.x-cepsearchfield-loading { background: transparent url('../scripts/ext-3.2.1/resources/images/default/grid/loading.gif') no-repeat scroll 0 0; }
+.x-cell-grid-loading {
+	text-indent: 15px;
+	background: transparent url('../scripts/ext-3.2.1/resources/images/default/grid/loading.gif') no-repeat scroll 0 0;
+}
+
+.status-inativo, .grid-status-inativo div, .tree-status-inativo span {
+	color: #C0C0C0 !important;
+	font-style: italic !important;
+	text-decoration: line-through !important;
+}
+.grid-negrito div { font-weight: bold !important; }
+
+.x-grid-notitle .x-panel-header {
+	font-family: tahoma,arial,helvetica,sans-serif;
+	font-size: 12px;
+	background-image: none;
+	padding: 0 3px 4px 2px;
+	border: none;
+	font-weight: normal;
+	border-bottom: 1px solid #D0D0D0;
+}
+
+.x-form-field-gallery-thumb {
+	text-align: center;
+	border: 1px solid #C3C3C3;
+}
+
+.error-message {
+	border: 1px solid #C3C3C3;
+	width: 100%;
+	min-height: 100px;
+	max-height: 250px;
+	overflow: auto;
+}
+
+.error-message ul {
+	list-style: disc;
+	padding: 10px 10px 10px 15px;
+}
+
+/* Borda somente no painel informado */
+.panel-border-top { border-top: 1px solid #D0D0D0 !important; }
+.panel-border-right { border-right: 1px solid #D0D0D0 !important; }
+.panel-border-bottom { border-bottom: 1px solid #D0D0D0 !important; }
+.panel-border-left { border-left: 1px solid #D0D0D0 !important; }
+
+/* Negrito no título da coluna filtrada */
+.x-grid3-hd-row td.ux-filtered-column { font-weight: bold; }
+
+/* Impressão pedido*/
+h1 {
+	font-weight: bold;
+	font-size: 13px;
+}
+td {
+	font-size: 11px;
+}
+.titulo-inscricao {
+	background-color: #F0F0F0;
+	padding-left:5px;
+	font-weight:bold;
+	height:22px;
+	font-size: 12px;
+}
+.inscricao-col-1 {
+	width:150px;
+	font-weight:bold;
+	font-size: 12px;
+}
+.inscricao-col-2 {
+	width:300px;
+	font-size: 11px;
+}
+.inscricao-col-3 {
+	width:60px;
+	font-weight:bold;
+	font-size: 12px;
+}
+.inscricao-col-4 {
+	width:90px;
+	font-size: 11px;
+}
+.col-produtos {
+	padding: 10px;
+}
+
+/* BUG FIX */
+.ext-ie7 .x-form-field-wrap .x-form-trigger {top: -1px !important;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+ * Galeria de Arquivos
+ */
+
+.formGaleria-textfield {
+	background:#F1F1F1 !important;
+	border:0 none !important;
+}
+
+.formGaleria-textfield:hover{border: 1px solid #E4E4E4 !important;}
+
+.formGaleria .x-panel-body{
+	background: white;
+	font: 11px Arial, Helvetica, sans-serif;
+}
+.formGaleria .thumb{
+	background: #dddddd;
+	padding: 3px;
+	height: 90px;
+	width: 120px;
+	text-align: center;
+}
+.formGaleria .thumb img{
+	
+}
+.formGaleria .thumb-wrap{
+	float: left;
+	margin: 4px;
+	margin-right: 0;
+	padding: 5px;
+	width: 125px;
+}
+.formGaleria .thumb-wrap span{
+	display: block;
+	overflow: hidden;
+	text-align: center;
+}
+
+.formGaleria .x-view-over{
+    border:1px solid #dddddd;
+	background: #efefef url('../scripts/ext-3.2.1/resources/images/default/grid/row-over.gif') repeat-x left top;
+	padding: 4px;
+}
+
+.formGaleria .x-view-selected{
+	background: #eff5fb url(images/selected.gif) no-repeat right bottom;
+	border:1px solid #99bbe8;
+	padding: 4px;
+}
+.formGaleria .x-view-selected .thumb{
+	background:transparent;
+}
+
+.formGaleria .loading-indicator {
+	font-size:11px;
+	background-image:url('../scripts/ext-3.2.1/resources/images/default/grid/loading.gif');
+	background-repeat: no-repeat;
+	background-position: left;
+	padding-left:20px;
+	margin:10px;
+}
+
+.detalhesImagem {
+	padding: 10px;
+}
+
+
+
+
+
+.imagensVariacao .x-panel-body{
+	background: white;
+	font: 11px Arial, Helvetica, sans-serif;
+}
+.imagensVariacao .thumb{
+	background: #dddddd;
+	padding: 3px;
+	height: 95px;
+	width: 95px;
+	text-align: center;
+}
+
+.imagensVariacao .thumb-wrap{
+	float: left;
+	margin: 4px;
+	margin-right: 0;
+	padding: 5px;
+	width: 100px;
+}
+
+.imagensVariacao .x-view-over {
+    border:1px solid #dddddd;
+    background: #efefef url('../scripts/ext-3.2.1/resources/images/default/grid/row-over.gif') repeat-x left top;
+	padding: 4px;
+}
+
+.imagensVariacao .x-view-selected {
+	background: #eff5fb url(images/selected.gif) no-repeat right bottom;
+	border:1px solid #99bbe8;
+	padding: 4px;
+}
+.imagensVariacao .x-view-selected .thumb {
+	background:transparent;
+}

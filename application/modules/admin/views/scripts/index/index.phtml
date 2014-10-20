@@ -1,0 +1,305 @@
+<?php echo $this->Doctype('HTML4_STRICT') ."\n"; ?>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<?php echo $this->HeadTitle() ."\n"; ?>
+	<base href="<?php echo Zend_Registry::get('config')->paths->admin->base; ?>/" />
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" >
+	
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/resources/css/ext-all-notheme.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/resources/css/xtheme-gray-extend.css" />
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/adapter/ext/ext-base.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ext-all.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ext-lang-pt_BR.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->BaseUrl(); ?>/styles/base_admin.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->BaseUrl(); ?>/styles/icons.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->BaseUrl(); ?>/styles/galerias.css" />
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/extras.js"></script>
+
+	<!-- Statusbar -->
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/statusbar/css/statusbar.css" />
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/statusbar/StatusBar.js"></script>
+
+	<!-- SpinnerField -->
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/spinner/css/Spinner.css" />
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/spinner/Spinner.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/spinner/SpinnerField.js"></script>
+
+	<!-- TreeGrid -->
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/treegrid/treegrid.css" />
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/treegrid/TreeGridSorter.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/treegrid/TreeGridColumnResizer.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/treegrid/TreeGridNodeUI.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/treegrid/TreeGridLoader.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/treegrid/TreeGridColumns.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/treegrid/TreeGrid.js"></script>
+
+	<!-- Grid Filters -->
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/gridfilters/css/GridFilters.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/gridfilters/css/RangeMenu.css" />
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/gridfilters/RangeMenu.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/gridfilters/ListMenu.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/gridfilters/GridFilters.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/gridfilters/filter/Filter.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/gridfilters/filter/StringFilter.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/gridfilters/filter/DateFilter.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/gridfilters/filter/ListFilter.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/gridfilters/filter/NumericFilter.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/gridfilters/filter/BooleanFilter.js"></script>
+
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/upload/swfupload.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/upload/SwfUploadPanel.js"></script>
+
+	<!-- TinyMCE -->
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/tiny_mce/tiny_mce.js"></script> 
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/Ext.ux.TinyMCE.js"></script>
+	<!-- <script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/tiny_mce/miframe.js"></script> -->
+
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/Ext.DataView.LabelEditor.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/MoneyField.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/Ext.ux.grid.RowSelectionPaging.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/InputTextMask.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/Ext.ux.GalleryField.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/Ext.ux.CepSearchField.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/Ext.ux.ProdGalleryField.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/Ext.ux.grid.RowExpander.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/SubTableRowExpander.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/Ext.ux.printElement.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/chartpack/uxfusionpak.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/Ext.ux.PhoneField.js"></script>	
+
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/uploadfield/file-upload.css" />
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/uploadfield/Ext.ux.FileUploadField.js"></script>
+
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/Application.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+function showGallery (field_name, url, type, win) {
+	App.Application.loadModule({
+		name: 'App.Sistema.Galeria',
+		url: '<?php echo $this->BaseUrl(); ?>/sistema_galeria',
+		callback: function() {
+			App.Sistema.Galeria.show({
+				sender: null,
+				callback: function(arquivo) {
+					if(arquivo[0].gal_arq_base.substr(path.lastIndexOf('.') + 1, arquivo[0].gal_arq_base.length).toUpperCase() == 'SWF') {
+						Ext.Msg.show({
+							title: 'Galeria de Imagens',
+							msg: 'Tipo de arquivo n�o permitido.<br>Este campo s� aceita arquivos do tipo <b>JPG, GIF OU PNG</b>.',
+							icon: Ext.Msg.ERROR,
+							buttons: Ext.Msg.OK
+						});
+						return false;
+					}
+					win.document.getElementById(field_name).value = arquivo[0].gal_arq_base;
+				},
+				scope: this
+			});
+		},
+		scope: this
+	});
+	return false;
+}
+
+Ext.onReady(function() {
+	//manter logado
+	App.Application.start({
+		baseUrl: '<?php echo $this->BaseUrl(); ?>',
+		usuario: {
+			codigo: <?php echo $this->usuario->getCodigo(); ?>,
+			nome: '<?php echo $this->usuario->getNome(); ?>'
+		},
+		menu: [{
+			xtype: 'panel',
+			frame: true,
+			height: 77,
+			html: '<img src="<?php echo $this->BaseUrl(); ?>/images/logo/logo.png" border="0" />'
+		}, {
+			xtype: 'buttongroup',
+			title: 'Site',
+			defaults: {
+				scale: 'large',
+				width: 60,
+				iconAlign: 'top'
+			},
+			items: [{
+				xtype: 'button',
+				text: 'HTML',
+				iconCls: 'icon-htmls-large',
+				disabled: <?php echo(!$this->HasPermission('htmls', 'index') ? 'true' : 'false'); ?>,
+				tooltip: 'Gerencia os htmls',
+				listeners: {
+					click: function(button, event) {
+						App.Application.loadModule({
+							name: 'App.Htmls.List',
+							url: '<?php echo $this->BaseUrl(); ?>/htmls'
+						});
+					},
+					scope: this
+				}
+			}, {
+				xtype: 'button',
+				text: 'Imprensa',
+				iconCls: 'icon-noticias-large',
+				disabled: <?php echo(!$this->HasPermission('imprensas', 'index') ? 'true' : 'false'); ?>,
+				tooltip: 'Gerencia o m�dulo de imprensa',
+				listeners: {
+					click: function(button, event) {
+						App.Application.loadModule({
+							name: 'App.Imprensas.List',
+							url: '<?php echo $this->BaseUrl(); ?>/imprensas'
+						});
+					},
+					scope: this
+				}
+			},{
+				xtype: 'button',
+				text: 'FAQ',
+				iconCls: 'icon-noticias-large',
+				disabled: <?php echo(!$this->HasPermission('imprensas', 'index') ? 'true' : 'false'); ?>,
+				tooltip: 'Gerencia o m�dulo de fale conosco',
+				listeners: {
+					click: function(button, event) {
+						App.Application.loadModule({
+							name: 'App.Faq.List',
+							url: '<?php echo $this->BaseUrl(); ?>/faq'
+						});
+					},
+					scope: this
+				}
+			},{
+				xtype: 'button',
+				text: 'Noticias',
+				iconCls: 'icon-noticias-large',
+				disabled: <?php echo(!$this->HasPermission('imprensas', 'index') ? 'true' : 'false'); ?>,
+				tooltip: 'Gerencia o m�dulo de noticias',
+				listeners: {
+					click: function(button, event) {
+						App.Application.loadModule({
+							name: 'App.Noticias.List',
+							url: '<?php echo $this->BaseUrl(); ?>/noticias'
+						});
+					},
+					scope: this
+				}
+			}]
+		}, '->', {
+			xtype: 'buttongroup',
+			title: 'Sistema',
+			columns: 3,
+			items: [{
+				xtype: 'button',
+				scale: 'large',
+				rowspan: 2,
+				tooltip: 'Configura��es',
+				width: 50,
+				iconCls: 'icon-tools-large',
+				iconAlign: 'top',
+				arrowAlign:'bottom',
+				menu: [{
+					text: 'Configura��es Gerais',
+					iconCls: 'icon-tools-small',
+					disabled: <?php echo(!$this->HasPermission('sistema_configuracoes', 'index') ? 'true' : 'false'); ?>,
+					handler: function() {
+						App.Application.loadModule({
+							name: 'App.Sistema.Configuracoes',
+							url: '<?php echo $this->BaseUrl(); ?>/sistema_configuracoes',
+							callback: function() {
+								App.Sistema.Configuracoes.show();
+							},
+							scope: this
+						});
+					}								
+				}, {
+					text: 'Galeria de Arquivos',
+					iconCls: 'icon-galeria-small',
+					listeners: {
+						click: function(button, event) {
+							App.Application.loadModule({
+								name: 'App.Sistema.Galeria',
+								url: '<?php echo $this->BaseUrl(); ?>/sistema_galeria',
+								callback: function() {
+									App.Sistema.Galeria.show({
+										sender: button.getEl(),
+										callback: function(selecionado) {
+											// console.log(selecionado);
+										},
+										scope: this
+									});
+								},
+								scope: this
+							});
+						},
+						scope: this
+					}
+				}]
+			}, {
+				xtype: 'button',
+				text: 'Alterar senha',
+				iconCls: 'icon-password',
+				tooltip: 'Alterar sua senha de acesso',
+				listeners: {
+					click: function(button, event) {
+						App.Application.loadModule({
+							name: 'App.Sistema.Password',
+							url: '<?php echo $this->BaseUrl(); ?>/index/change-password',
+							callback: function() {
+								App.Sistema.Password.show(button.getEl());
+							},
+							scope: this
+						});
+					},
+					scope: this
+				}
+			}, {
+				xtype: 'button',
+				scale: 'large',
+				rowspan: 2,
+				text: 'Encerrar',
+				iconCls: 'icon-logout',
+				iconAlign: 'top',
+				tooltip: 'Encerra o sistema',
+				listeners: {
+					click: function(button, event) {
+						Ext.Msg.show({
+							title: button.text,
+							icon: Ext.Msg.QUESTION,
+							msg: '<b><?php echo $this->usuario->getNome(); ?></b> deseja encerrar sua sess�o?',
+							buttons: Ext.Msg.YESNO,
+							fn: function(button, event) {
+								if ('YES' == button.toUpperCase()) {
+									document.location.href = '<?php echo $this->BaseUrl(); ?>/index/logout';
+								}
+							},
+							scope: this
+						});
+					},
+					scope: this
+				}
+			}, {
+				xtype: 'button',
+				text: 'Usu�rios',
+				iconCls: 'icon-perfiluser',
+				tooltip: 'Gerenciador de perfis e usu�rios do sistema',
+				disabled: <?php echo(!$this->HasPermission('sistema_usuarios', 'index') ? 'true' : 'false'); ?>,
+				listeners: {
+					click: function(button, event) {
+						App.Application.loadModule({
+							name: 'App.Sistema.PerfisUsuarios',
+							url: '<?php echo $this->BaseUrl(); ?>/sistema_usuarios'
+						});
+					},
+					scope: this
+				}
+			}]
+		}]
+	});
+});
+</script>
+
+</body>
+</html>

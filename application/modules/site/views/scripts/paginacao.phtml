@@ -1,0 +1,21 @@
+<?php  if ($this->pageCount && count($this->pagesInRange) > 1) { ?>	
+			<ul class="pagination noneMobile">
+			<?php if (isset($this->previous)) { ?>
+				<li><a href="<?php echo App_Funcoes_Busca::linkPaginacao($this->previous); ?>" title="Anterior" class=" prev"></a></li>
+			<?php } else { ?>
+				<li><a title="Anterior" class="active prev"></a></li>
+			<?php }
+					foreach ($this->pagesInRange as $page) {
+						if ($page == $this->current) {
+							echo "<li><a>{$page}</a></li>";
+						} else {
+							echo "<li><a href=\"".App_Funcoes_Busca::linkPaginacao($page)."\" class=\"active\">{$page}</a></li>";
+						}
+					}
+					 if (isset($this->next)) { ?>
+				<li><a href="<?php echo App_Funcoes_Busca::linkPaginacao($this->next); ?>" class="next" title="Pr�xima"></a></li>
+			<?php } else { ?>
+				<li><a title="Pr�xima" class=" active  next"></a></li>
+			<?php } ?>		
+			</ul>					
+<?php } ?>

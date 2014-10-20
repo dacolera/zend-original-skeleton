@@ -1,0 +1,20 @@
+.defaultSkin span.mce_codemirror {
+	background:url(../img/cm.gif) no-repeat;	
+}
+.CodeMirrorFrame {
+	border:1px solid black;	
+}
+.CodeMirrorToolBar
+{
+	border:1px solid black;
+	background:#F0F0EE;
+	margin:0px;
+	padding:0px;
+}
+.CMBtn
+{
+	border:2px solid black;
+	background:#EEEEEE;
+	font :700 10px verdana;
+	margin:0px;
+}

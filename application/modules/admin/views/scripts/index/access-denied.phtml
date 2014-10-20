@@ -1,0 +1,18 @@
+<?php echo $this->Doctype('HTML4_STRICT') ."\n"; ?>
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
+	<?php echo $this->HeadTitle() ."\n"; ?>
+	<base href="<?php echo Zend_Registry::get('config')->paths->admin->base; ?>" />
+<body>
+
+<p style="text-align:center; color:#666666; padding-top:5%;">
+	<img src="<?php echo $this->BaseUrl(); ?>/images/geral/acess_denied.gif">
+	<br /><br />
+	Você não tem permissão para executar está ação.
+	<br /><br />
+	Em caso de dúvidas, contate o administrador do sistema.
+</p>
+
+</body>
+</html>

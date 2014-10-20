@@ -1,0 +1,76 @@
+@CHARSET "ISO-8859-1";
+
+/* Login */
+.icon-login-window { background-image: url('../images/icons/small/key.png') !important; }
+.icon-login-logar { background-image: url('../images/icons/medium/logar.png') !important; }
+.icon-login-esqueci { background-image: url('../images/icons/medium/esqueci.png') !important; }
+
+/* Menus */
+.icon-close-tab { background-image: url('../images/icons/small/close-tab.png') !important; }
+.icon-close-alltab { background-image: url('../images/icons/small/close-alltab.png') !important; }
+
+/* Site */
+.icon-noticias-small { background-image: url('../images/icons/small/noticias.png') !important; }
+.icon-noticias-large { background-image: url('../images/icons/large/noticias.png') !important; }
+
+.icon-htmls-small { background-image: url('../images/icons/small/htmls.png') !important; }
+.icon-htmls-large { background-image: url('../images/icons/large/htmls.png') !important; }
+
+.icon-downloads-small { background-image: url('../images/icons/small/downloads.png') !important; }
+.icon-downloads-large { background-image: url('../images/icons/large/downloads.png') !important; }
+
+.icon-printer-small { background-image: url('../images/icons/small/printer.png') !important; }
+.icon-status-small { background-image: url('../images/icons/small/status.png') !important; }
+
+/* Configuração */
+.icon-galeria-small { background-image: url('../images/icons/small/camera.png') !important; }
+
+/* Sistema */
+.icon-logout { background-image: url('../images/icons/large/disconnect.png') !important; }
+.icon-password { background-image: url('../images/icons/small/password.png') !important; }
+.icon-perfiluser { background-image: url('../images/icons/small/users.png') !important; }
+
+.icon-user-insert { background-image: url('../images/icons/small/user-insert.png') !important; }
+.icon-user-update { background-image: url('../images/icons/small/user-update.png') !important; }
+.icon-user-delete { background-image: url('../images/icons/small/user-delete.png') !important; }
+
+/* Geral */
+.icon-insert { background-image: url('../images/icons/small/insert.png') !important; }
+.icon-update { background-image: url('../images/icons/small/update.png') !important; }
+.icon-delete { background-image: url('../images/icons/small/delete.png') !important; }
+.icon-tools { background-image: url('../images/icons/small/tools.png') !important; }
+.icon-tools-small { background-image: url('../images/icons/small/tools.png') !important; }
+.icon-tools-large { background-image: url('../images/icons/large/tools.png') !important; }
+.icon-filter-clean { background-image: url('../images/icons/small/filter-clean.png') !important; }
+.icon-filter { background-image: url('../images/icons/small/filter.png') !important; }
+.icon-refresh { background-image: url('../images/icons/small/refresh.png') !important; }
+.icon-excel { background-image: url('../images/icons/small/excel.gif') !important; }
+
+.icon-save-small { background-image: url('../images/icons/small/save.png') !important; }
+.icon-save-medium { background-image: url('../images/icons/medium/save.png') !important; }
+
+.icon-save-cancel-small { background-image: url('../images/icons/small/save-cancel.png') !important; }
+.icon-save-cancel-medium { background-image: url('../images/icons/medium/save-cancel.png') !important; }
+
+.icon-up { background-image: url('../images/icons/small/up.png') !important; }
+.icon-down { background-image: url('../images/icons/small/down.png') !important; }
+
+.icon-add-small { background-image: url('../images/icons/small/add.png') !important; }
+.icon-add-medium { background-image: url('../images/icons/medium/add.png') !important; }
+
+.icon-ok-small { background-image: url('../images/icons/small/ok.png') !important; }
+.icon-ok-medium { background-image: url('../images/icons/medium/ok.png') !important; }
+
+.icon-cancel-small { background-image: url('../images/icons/small/cancel.png') !important; }
+.icon-cancel-medium { background-image: url('../images/icons/medium/cancel.png') !important; }
+
+.icon-folder-pai { background: url('../images/icons/small/folder_add.png') no-repeat !important; }
+.icon-folder { background: url('../images/icons/small/folder_closed.png') no-repeat !important; }
+
+.icon-view { background-image: url('../images/icons/small/view.png') !important; }
+
+.icon-send-small { background-image: url('../images/icons/small/send-image.png') !important; }
+.icon-historico-small { background-image: url('../images/icons/small/historico.png') !important; }
+
+.icon-ativado { background-image: url('../images/icons/small/ok.png') !important; }
+.icon-desativado { background-image: url('../images/icons/small/forbidden.png') !important; }

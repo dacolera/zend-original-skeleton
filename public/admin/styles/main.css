@@ -1,0 +1,148 @@
+@import url("config.css");
+
+/*FontFace*/
+@font-face {
+    font-family: 'sourcesanspro';
+    src: url('fonts/sourcesanspro.eot');
+    src: url('fonts/sourcesanspro.eot?#iefix') format('embedded-opentype'),
+         url('fonts/sourcesanspro.woff') format('woff'),
+         url('fonts/sourcesanspro.ttf') format('truetype'),
+         url('fonts/sourcesanspro.svg#sourcesanspro') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+header{ width: 100%; height:115px; background: url("images/bg-header.jpg") top left repeat-x; margin-bottom: 25px;}
+.content{ width: 960px; height: auto; border:1px solid #cacaca; background: #fff; padding: 25px 20px 25px 20px; margin: 0 auto; overflow: hidden;}
+
+.breadcrumb{ color:#4a4949; font-family: "sourcesanspro", arial; font-size: 15px; margin-bottom: 35px;}
+.breadcrumb a.inicio{ color:#4a4949; font-family: "sourcesanspro", arial; font-size: 15px; text-decoration: none;}
+.breadcrumb a{ color:#8c0c1a; font-family: "sourcesanspro", arial; font-size: 15px; text-decoration: none;}
+.breadcrumb span:last-child{ color:#8c0c1a; font-family: "sourcesanspro", arial; font-size: 15px; text-decoration: none;}
+
+/*Topo*/
+.topo{width: 1000px; height: auto; margin: 0 auto; padding-top: 15px;}
+
+/*Menu*/
+nav{width:650px; heigth:auto; float: right;}
+ul        { list-style:none; list-style-position:outside; margin:0; padding:20px 0 0 0; font-family: "sourcesanspro", arial; font-weight: 100;}
+li		  { list-style:none; display: inline;}
+li a	  { color:#4a4949; font-size: 16px; text-decoration: none; margin:0 5px 0 5px; padding:5px 10px 11px 10px;}
+li a:hover{ color:#ffffff; font-size: 16px; background: url(images/hover.png) top center; text-decoration: none; }
+.active{ color:#ffffff; font-size: 16px; background: url(images/sprite.png) ; text-decoration: none; }
+
+/*Home*/
+.content-home{ width: 1000px; height: auto; margin: 0 auto;}
+.banner-home{width: 100%; height: 443px; border-bottom: 5px solid #8aa345;}
+
+.box-empresa{ width: 490px; height: 120px; border:1px solid #cacaca; background: #fff; margin:30px 0 30px 0; float: left;}
+.box-acompanhe{ width: 490px; height: 120px; border:1px solid #cacaca; background: #fff; margin:30px 0 30px 0; float: right;}
+.content-home a .box-empresa .texto, a .box-acompanhe .texto{color: #464646;}
+.box-empresa img, .box-acompanhe img{float:right;}
+.box-empresa .texto, .box-acompanhe .texto{padding:20px; font-size: 14px; width: 410px;}
+.box-empresa h2, .box-acompanhe h2{color:#8c0c1a; font-size:25px; font-family: "sourcesanspro", arial; font-weight: lighter;}
+
+.content .controladores, .localizacao, .csc{float:left; width: 300px; height: auto; }
+
+.content .csc h2, .controladores h2, .localizacao h2{ color:#8c0c1a; font-size: 28px; font-weight: lighter;}
+.content .csc img, .controladores img, .localizacao img{border:1px solid #641923; margin: 15px 0 15px 0;}
+
+.content .csc a, .controladores a, .localizacao a, .controladores-csc a, .controladores-corona a , .controladores-eternit a { text-decoration: none; float: right;}
+.content .csc a img, .controladores a img, .localizacao a img, .controladores-csc a img, .controladores-corona a img, .controladores-eternit a img{ border: 0; float: right; margin:0px 0 0 5px;}
+.content .csc a p, .controladores a p, .localizacao a p, .controladores-csc a p, .controladores-corona a p, .controladores-eternit a p{float: left; font-size: 19px; color:#8c0c1a; font-family: "sourcesanspro", arial;}
+
+.content .box-divisor{border-left: 1px solid #d5d5d5; float: left; width: 1px; height: 262px; margin: 47px 17px 0 11px;}
+
+/*Nossa Empresa*/
+.nossa-empresa .csc, .estrutura{ width:100%;}
+.nossa-empresa .csc h1, .fale h1{ color:#8c0c1a; font-family: "sourcesanspro", arial; font-weight: lighter; font-size: 30px; margin-bottom: 5px;}
+.nossa-empresa .csc img{border:1px solid #641923; float: left; margin-right: 15px;}
+.nossa-empresa .csc p{float: left; width: 580px; font-size: 14px; padding-top:15px;}
+
+.nossa-empresa .eternit, .corona{width: 422px; height: 390px; border:1px solid #d7d5d0; border-bottom: 10px solid #ed1f24; padding:25px; margin:30px 0 47px 0; float: left;}
+.nossa-empresa .eternit img, .corona img{border:0; margin-bottom: 30px;}
+.nossa-empresa .eternit p, .corona p{ width: auto; font-size: 16px; line-height: 27px; margin-bottom: 10px;}
+
+.nossa-empresa .corona{border-bottom: 10px solid #14589a; float: right!important;}
+
+.nossa-empresa .estrutura .img{ float: left; margin-right: 15px;}
+
+.nossa-empresa .estrutura img{border:1px solid #641923;}
+.nossa-empresa .estrutura a div, .endereco01 .texto a div, .endereco02 .texto a div{ background: url(images/sprite.png) -30px top no-repeat; width: 143px; height: 28px; color: #fff; text-decoration: none; margin: 5px 0 0 209px; padding:8px 0 0 10px; font-size: 14px; font-family: "sourcesanspro", arial;}
+
+.nossa-empresa .estrutura .texto{width: 580px; float: left;}
+.nossa-empresa .estrutura .texto h2{ color:#8c0c1a; font-family: "sourcesanspro", arial; font-weight: lighter; font-size: 30px; margin-bottom: 25px;}
+.nossa-empresa .estrutura .texto p{float: left; width: 580px; font-size: 14px; padding-top:15px;}
+
+/*Acompanhe a Obra*/
+.acompanhe h1{float:left; color:#8c0c1a; font-family: "sourcesanspro", arial; font-weight: lighter; font-size: 30px; margin-top: 20px;}
+.acompanhe .barra{width: 600px; height: auto; float: right;}
+.acompanhe .barra p{text-align: right; font-size: 15px; font-family: "sourcesanspro", arial; color:#000; margin: 0!important;}
+.acompanhe .barra .geral{background: #ecebe9; width: 600px; height:37px; border:1px solid #e4e2dd; padding: 1px;}
+.acompanhe .barra .progresso{background: url(images/bg-barra.jpg) top left repeat-x; width: 41%; height:40px;}
+.acompanhe .barra .progresso span{color: #fff; font-family: "sourcesanspro", arial; font-size: 18px; float: right; padding: 7px;}
+.acompanhe .texto p{padding: 30px 0 20px 0!important;}
+.fancybox-custom .fancybox-skin { box-shadow: 0 0 50px #222;}
+
+/*Fale Conosco*/
+.fale p{font-family: "sourcesanspro", arial; font-size: 14px; color: #4a4949; margin-bottom: 20px;}
+
+.fale label {font-family: "sourcesanspro", arial; color:#4a4949; font-size: 18px; float: left;}
+.fale label span{color:#d03030;}
+.fale label input[type=text]{background: url(images/sprite.png) -1px -38px no-repeat; width:280px; height: 34px; padding: 0 10px 0 10px; display: block; margin-top: 10px;}
+.fale label textarea{background: url(images/sprite.png) -1px -161px no-repeat; width:940px; height: 180px; padding: 10px; margin-top: 5px;}
+.fale label input[type=submit]{background: url(images/sprite.png) -30px top no-repeat; width: 153px; height: 32px; color: #fff; text-decoration: none; font-size: 14px; font-family: "sourcesanspro", arial;}
+.fale .mail{color: #4a4949; font-weight: bold;}
+.espacamento-campos{margin-right: 30px;}
+.linha{}
+label{margin-bottom: 20px;}
+
+.styleCombobox {background: url(images/sprite.png) -1px -120px no-repeat; width:630px; height: 34px; margin-top: 5px;}
+.styleCombobox span {position:absolute; }
+.comboboxFocus {}
+.styleCombobox select {width:100%;opacity:0;filter:alpha(opacity=0);border-top:0!important;	margin-top:15px;}
+
+.styleCombobox01 {background: url(images/sprite.png) -1px -80px no-repeat; width:300px; height: 34px; margin-top: 5px;}
+.styleCombobox01 span {position:absolute;}
+.comboboxFocus01 {}
+.styleCombobox01 select {width:100%;opacity:0;filter:alpha(opacity=0); margin-top:15px;}
+
+/*Trabalhe Conosco*/
+#div-input-file{background: url(images/sprite.png) -306px -81px no-repeat; height:35px; width:487px; margin:0px; cursor: pointer;}
+#div-input-file #file-original{opacity: 0.0; -moz-opacity: 0.0;filter: alpha(opacity=00); font-size:18px;}
+#div-input-falso{ margin-top:-38px;}
+#div-input-falso #file-falso{width:400px; height:35px; font-size:18px; font-family: Verdana; background: transparent; cursor: pointer;}
+
+/*Localização*/
+.localizacao h2{color:#8c0c1a; font-family: "sourcesanspro", arial; font-weight: lighter; font-size: 30px; margin-bottom: 5px;}
+
+.localizacao .endereco{width: 960px;}
+.localizacao .endereco01{width: 490px; height: auto; float: right; margin-right: -20px;}
+.localizacao .endereco02{width: 490px; height: auto; float: left; margin-left: -20px;}
+
+.localizacao .endereco01 .texto, .endereco02 .texto{width: 450px; padding: 20px 20px 0 20px; color:#4a4949; font-size: 14px; font-family: "sourcesanspro", arial;}
+
+.localizacao .divisor{width: 960px; height: 1px; border-top: 1px solid #cf9aa0; margin:0 auto; margin-top:40px; padding-top: 40px;}
+
+/*Controladores*/
+.controladores-banner{width: 1000px; height: auto; border-bottom: 5px solid #8c0c1a; margin-left: -20px; margin: 0 auto; margin-bottom: 30px;}
+.controladores-csc, .controladores-eternit, .controladores-corona{width: 295px; height: auto; float: left; font-size: 13px;}
+.controladores-csc p, .controladores-eternit p, .controladores-corona p{margin-bottom: 10px;}
+.controladores-csc img, .controladores-eternit img, .controladores-corona img{margin:20px 0 20px 0;}
+.controladores-csc h2{font-size: 22px; color: #8c0c1a; font-family: "sourcesanspro", arial; font-weight: lighter; letter-spacing: -1px;}
+.controladores-eternit h2{font-size: 22px; color:#fe0000; font-family: "sourcesanspro", arial; font-weight: lighter;letter-spacing: -1px;}
+.controladores-corona h2{font-size: 22px; color: #291770; font-family: "sourcesanspro", arial; font-weight: lighter;letter-spacing: -1px;}
+.controladores-eternit {margin: 0 35px 0 35px;}
+
+.controladores-csc-detalhe, .controladores-corona-detalhe{min-height: 400px;}
+.controladores-csc-detalhe h1{color:#ed1f24; font-size: 25px; margin:20px 0 20px 0; font-weight: lighter;}
+.controladores-csc-detalhe p, .controladores-corona-detalhe p{margin-bottom:10px;}
+.controladores-csc-detalhe p a, .controladores-corona-detalhe p a{color:#000; font-weight: bold;}
+
+.controladores-corona-detalhe h1{color:#14025b; font-size: 25px; margin:20px 0 20px 0; font-weight: lighter;}
+
+/*Footer*/
+footer{width: 100%; height: 44px; background:url(images/bg-footer.jpg) repeat-x; margin-top:25px;}
+.content-footer{width: 1000px; height: auto; margin: 0 auto; padding-top:15px;}
+.content-footer p{float: left;}
+.content-footer a{float: right;}

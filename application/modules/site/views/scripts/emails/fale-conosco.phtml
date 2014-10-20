@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<title><?php echo Zend_Registry::get('config')->project; ?></title>
+</head>
+
+<body>
+	<table width="683" style="width:683px;" align="center" cellpadding="0" cellspacing="0" border="0">
+		<tr>
+			<td colspan="11"><img src="<?php echo Zend_Registry::get('config')->paths->site->base; ?>/images/email/topo.jpg" border="0" /></td>
+		</tr>
+		<tr>
+			<td width="1" bgcolor="#f0f0f0" style="font-size:0px;"> </td>
+			<td width="1" bgcolor="#eaeaea" style="font-size:0px;"> </td>
+			<td width="1" bgcolor="#e2e2e2" style="font-size:0px;"> </td>
+			<td width="1" bgcolor="#d8d8d8" style="font-size:0px;"> </td>
+			<td width="6" bgcolor="#ffffff" style="font-size:0px;"> </td>
+			<td bgcolor="#fdf9f8" style="background-color:#ffffff; width:663px;" width="663">
+				<table cellpadding="0" cellspacing="0" border="0" width="100%">
+					<tr>
+						<td width="42" style="width:42px;">&nbsp;</td>
+						<td valign="top" height="40" style="color:#7A7A7A; font-size:13px; font-family:Verdana; font-weight:bold;"><p><strong><?php echo Zend_Registry::get('config')->project; ?> - Fale Conosco</strong></p></td>
+						<td width="42" style="width:42px;">&nbsp;</td>
+					</tr>
+					<tr>
+						<td width="42" style="width:42">&nbsp;</td>
+						<td style="font-family:Verdana; font-size:11px; color:#757573;">
+							<p>
+								<b>Nome:</b> <?php echo $this->nome; ?><br />
+								<b>E-mail:</b> <?php echo $this->email; ?><br />
+								<b>Empresa:</b> <?php echo $this->empresa; ?><br />
+								<b>Telefone:</b> (<?php echo $this->ddd; ?>) <?php echo $this->telefone; ?><br /><br />
+								
+								<b>CEP:</b> <?php echo $this->cep; ?><br />
+								<b>Endereço:</b> <?php echo $this->endereco; ?>, <?php echo $this->numero; ?><br />
+								<b>Complemento:</b> <?php echo $this->complemento; ?><br />
+								<b>Bairro:</b> <?php echo $this->bairro; ?><br />
+								<b>Cidade:</b> <?php echo $this->cidade; ?><br />
+								<b>Estado:</b> <?php echo $this->estado; ?><br /><br />
+								
+								<b>Departamento:</b> <?php echo $this->departamento; ?><br />
+								<b>Mensagem:</b> <?php echo $this->mensagem; ?><br /><br />
+								<b>IP do Remetente:</b><br /><?php echo $this->ip; ?>
+							</p>
+						</td>
+						<td width="42" style="width:42">&nbsp;</td>
+					</tr>
+				</table>
+			</td>
+			<td width="6" bgcolor="#ffffff" style="font-size:0px;"> </td>
+			<td width="1" bgcolor="#d8d8d8" style="font-size:0px;"> </td>
+			<td width="1" bgcolor="#e2e2e2" style="font-size:0px;"> </td>
+			<td width="1" bgcolor="#eaeaea" style="font-size:0px;"> </td>
+			<td width="1" bgcolor="#f0f0f0" style="font-size:0px;"> </td>
+		</tr>
+		<tr>
+			<td colspan="11"><img src="<?php echo Zend_Registry::get('config')->paths->site->base; ?>/images/email/rodape.jpg" border="0" /></td>
+		</tr>
+	</table>
+</body>
+</html>

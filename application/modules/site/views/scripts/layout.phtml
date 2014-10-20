@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-br">
+<?php echo $this->HeadTitle() ."\n"; ?>
+    <base href="<?php echo Zend_Registry::get('config')->paths->site->base; ?>/" />
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+	<meta name="author" content="<?php echo Zend_Registry::get('config')->project; ?>" />
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="styles/main.css" />
+	<link rel="stylesheet" type="text/css" href="styles/owl.carousel.css" />
+	<link rel="stylesheet" type="text/css" href="styles/owl.theme.css" />
+	<link rel="stylesheet" type="text/css" href="styles/owl.transitions.css" />
+	<link rel="stylesheet" type="text/css" href="styles/desktop.css" />
+	<?php echo $this->HeadMeta(); ?>
+	<link rel="stylesheet" type="text/css" href="styles/demo-style.css" />
+	<!--[if IE 8]>
+		<link rel="stylesheet" href="styles/ie.css" />
+	<![endif]-->
+	<?php echo $this->HeadStyle() ."\n"; ?>
+	<script type="text/javascript" src="scripts/lib/modernizr.js"></script>
+	<script type="text/javascript" src="scripts/lib/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="scripts/lib/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="scripts/lib/jquery.eislideshow.js"></script>
+    <script type="text/javascript" src="scripts/lib/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="http://malsup.github.com/jquery.cycle.all.js"></script>
+    <?php echo $this->HeadScript() ."\n"; ?>
+	<?php echo $this->HeadLink() ."\n"; ?>
+    <script>
+            $(function() {
+                $('#ei-slider').eislideshow({
+					animation			: 'center',
+					autoplay			: true,
+					slideshow_interval	: 3000,
+					titlesFactor		: 0
+                }); 
+			//internal cycles
+                $('#s2').cycle({
+          	      fx:     'fade',
+          	      speed:  'fast',
+          	      timeout: 0,
+          	      next:   '#next2',
+          	      prev:   '#prev2'
+          	    });
+            });
+    </script>
+                  
+</head>
+<body>
+	<?php echo $this->render('topo.phtml'); ?>
+	<?php echo $this->layout()->content . "\n"; ?>
+	<?php echo $this->render('rodape.phtml'); ?>
+</body>
+</html>

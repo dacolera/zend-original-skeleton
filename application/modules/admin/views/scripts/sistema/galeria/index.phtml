@@ -1,0 +1,560 @@
+Ext.namespace('App', 'App.Sistema');
+
+App.Sistema.Galeria = function() {
+	var callback = {
+		fn: Ext.emptyFn,
+		scope: null
+	};
+
+	function buildContainer(parent, gallery, singleSelect) {
+		this.viewArquivos = new Ext.DataView({
+			cls: 'formGaleria',
+			style: 'overflow: auto',
+			loadingText: 'Carregando arquivos da galeria...',
+			singleSelect: false,
+			multiSelect: true,
+			overClass: 'x-view-over',
+			itemSelector:'div.thumb-wrap',
+			emptyText : '<div style="padding:10px;">Não existem arquivos na galeria selecionada.</div>',
+			store: new Ext.data.JsonStore({
+				url: '<?php echo $this->BaseUrl(); ?>/sistema_galeria/index/load/arquivos',
+				root: 'arquivos',
+				baseParams: {galeria: null, arquivo: null},
+				fields: [
+					{name: 'gal_arq_idArquivo'},
+					{name: 'gal_arq_nome'},
+					{name: 'gal_arq_base'},
+					{name: 'gal_arq_info'}
+				],
+				reader: new Ext.data.JsonReader({
+					root: 'arquivos',
+					totalProperty: 'total'
+				},[
+					{name: 'gal_arq_idArquivo'},
+					{name: 'gal_arq_nome'},
+					{name: 'gal_arq_base'},
+					{name: 'gal_arq_info'}
+				]),
+				listeners: {
+					update: function(store, record){
+						Ext.Msg.show({
+							title: wndGaleria.title,
+							msg: 'Deseja realmente renomear o arquivo selecionado?',
+							icon: Ext.Msg.QUESTION,
+							buttons: Ext.Msg.YESNO,
+							fn: function(button, event) {
+								if ('YES' == button.toUpperCase()) {
+									var node = treeGalerias.getSelectionModel().getSelectedNode();
+									wndGaleria.getEl().mask('Renomeado arquivo...', 'x-mask-loading');
+									Ext.Ajax.request({
+										url: '<?php echo $this->BaseUrl(); ?>/sistema_galeria/update-arquivo',
+										method: 'POST',
+										params: {gal_arq_idArquivo: record.get('gal_arq_idArquivo'), gal_arq_nome: record.get('gal_arq_nome')},
+										callback: function(options, success, response) {
+											var resp = Ext.util.JSON.decode(response.responseText);
+											wndGaleria.getEl().unmask();
+											Ext.Msg.show({
+												title: wndGaleria.title,
+												msg: resp.message,
+												icon: (resp.success ? Ext.Msg.INFO : Ext.Msg.ERROR),
+												buttons: Ext.Msg.OK,
+												fn: function(button, event) {
+													if (!resp.success) {
+														store.reload();
+													}
+												},
+												scope: this
+											});
+										},
+										scope: this
+									});
+								}
+							},
+							scope: this
+						});
+					},
+					scope: this
+				}
+			}),
+			tpl: new Ext.XTemplate(
+				'<tpl for=".">',
+				'<div class="thumb-wrap" id="{gal_arq_nome}" qtip="{gal_arq_info}">',
+					'<div class="thumb"><img src="<?php echo $this->BaseUrl() ?>/utils/resize-galeria?imagem={gal_arq_idArquivo}&width=120&height=90" title="{gal_arq_nome}"></div>',
+					'<span class="x-editable">{gal_arq_nome}</span></div>',
+				'</tpl>',
+				'<div class="x-clear"></div>'
+			),
+			plugins: [
+				new Ext.DataView.LabelEditor({dataIndex: 'gal_arq_nome'})
+			],
+			listeners: {
+	            selectionchange: function(view, selections) {
+	            	wndGaleria.tabArquivos.btnVisualizar.setDisabled(selections.length != 1);
+	            	wndGaleria.tabArquivos.btnRemover.setDisabled(!selections.length);
+	            	wndGaleria.btnSelecionar.setDisabled(!selections.length || (singleSelect == true && selections.length > 1));
+	            },
+				dblclick: function(dataView, index, node, event) {
+					wndGaleria.tabArquivos.btnVisualizar.fireEvent('click', wndGaleria.tabArquivos.btnVisualizar, event);
+				},
+				scope:this
+			}
+		});
+
+		this.treeGalerias = new Ext.tree.TreePanel({
+			ref: 'treeGalerias',
+			region: 'west',
+			margins: '5px 0 5px 5px',
+			split: true,
+			collapseMode: 'mini',
+			width: 200,
+			minSize: 200,
+			maxSize: 200,
+			useArrows: true,
+			autoScroll: true,
+			containerScroll: true,
+			dataUrl: '<?php echo $this->BaseUrl(); ?>/sistema_galeria/index/load/galeria',
+			rootVisible: (gallery ? false : true),
+			enableDD: true,
+			root: {
+				nodeType: 'async',
+				id: (gallery ? String.format('root:{0}', gallery) : '0'),
+				text: 'Galerias',
+				iconCls: 'icon-categorias-small',
+				draggable: false,
+				expanded: true,
+				nodeParameter: 'galeria'
+	        },
+	        selModel: new Ext.tree.DefaultSelectionModel({
+	        	listeners: {
+	        		selectionchange: function(selModel, node) {
+	        			wndGaleria.treeGalerias.btnInserir.setDisabled(!node || node.id == 'new' || node.id == '0');
+	        			wndGaleria.treeGalerias.btnRemover.setDisabled(!node || node.id == 'new' || node == this.treeGalerias.getRootNode() || isNaN(node.id));
+	        			wndGaleria.tabArquivos.btnAtualizar.setDisabled(!node || node.id == 'new' || node == this.treeGalerias.getRootNode());
+	        			wndGaleria.tabArquivos.edtFiltro.setDisabled(!node || node.id == 'new' || node == this.treeGalerias.getRootNode());
+	        			wndGaleria.tabUpload.setDisabled(!node || node.id == 'new' || node == this.treeGalerias.getRootNode());
+
+	        			if (node && node.id != 'new' &&  node != this.treeGalerias.getRootNode()) {
+	        				this.viewArquivos.getStore().baseParams.galeria =  node.id;
+	        				this.viewArquivos.getStore().load();
+	        			} else {
+	        				this.viewArquivos.getStore().removeAll();
+	        			}
+	        			wndGaleria.tabArquivos.edtFiltro.reset();
+	        		},
+	        		scope: this
+	        	}
+	        }),
+	        listeners: {
+	        	beforeappend:function(tree, parent, node) {
+	        		if (parent.isLeaf()) {
+	        			parent.leaf = false;
+	        		}
+	        	},
+	        	scope: this
+	        },
+			tbar: [{
+				ref: '../btnInserir',
+				text: 'Inserir',
+				iconCls: 'icon-add-small',
+				tooltip: {title: 'Galeria', text: 'Insere uma nova galeria no sistema'},
+				disabled: true,
+				listeners: {
+					click: function(button, event) {
+						var parentNode = this.treeGalerias.getSelectionModel().getSelectedNode();
+						parentNode.expand(false, true, function() {
+							Ext.Msg.prompt('Nova Galeria', 'Informe o nome da nova galeria', function(button, value){
+								if(button.toUpperCase() == 'OK' && value.length) {
+									var node = parentNode.appendChild(new Ext.tree.TreeNode({
+										id: 'new',
+										text: value,
+										iconCls: 'icon-categorias-small'
+									}));
+									
+									this.treeGalerias.getSelectionModel().select(node);
+									this.editorGaleria.editNode = node;
+									this.editorGaleria.fireEvent('complete', this.editorGaleria, value)
+								}
+							}, this);
+						}, this);
+					},
+					scope: this
+				}
+			}, {
+				ref: '../btnRemover',
+				text: 'Remover',
+				iconCls: 'icon-delete',
+				tooltip: {title: 'Galeria', text: 'Remove a galeria selecionada do sistema'},
+				disabled: true,
+				listeners: {
+					click: function(button, event) {
+						Ext.Msg.show({
+							title: wndGaleria.title,
+							msg: 'Deseja realmente remove a galeria selecionada?',
+							icon: Ext.Msg.QUESTION,
+							buttons: Ext.Msg.YESNO,
+							fn: function(button, event) {
+								if ('YES' == button.toUpperCase()) {
+									var node = treeGalerias.getSelectionModel().getSelectedNode();
+									wndGaleria.getEl().mask('Removendo galeria...', 'x-mask-loading');
+									Ext.Ajax.request({
+										url: '<?php echo $this->BaseUrl(); ?>/sistema_galeria/delete-galeria',
+										method: 'POST',
+										params: {gal_idGaleria: node.id},
+										callback: function(options, success, response) {
+											var resp = Ext.util.JSON.decode(response.responseText);
+											wndGaleria.getEl().unmask();
+											Ext.Msg.show({
+												title: wndGaleria.title,
+												msg: resp.message,
+												icon: (resp.success ? Ext.Msg.INFO : Ext.Msg.ERROR),
+												buttons: Ext.Msg.OK,
+												fn: function(button, event) {
+													if (resp.success) {
+														node.parentNode.removeChild(node);
+													}
+												},
+												scope: this
+											});
+										},
+										scope: this
+									});
+								}
+							},
+							scope: this
+						});
+					},
+					scope: this
+				}
+			}]
+		});
+
+		this.editorGaleria = new Ext.tree.TreeEditor(this.treeGalerias, {vtype: 'diretorio'}, {
+			allowBlank: false,
+			blankText: 'A name is required',
+			selectOnFocus: true,
+			cancelOnEsc: true,
+			completeOnEnter: true,
+			ignoreNoChange: false,
+			updateEl: true,
+			listeners: {
+				complete: function(editor, value, startValue) {
+					if (value != startValue && (editor.editNode.id == 'new' || !isNaN(editor.editNode.id) )) {
+	            		var token = (editor.editNode.id == 'new' ? 'Inserindo' : 'Atualizando');
+						wndGaleria.getEl().mask(String.format('{0} galeria...', token), 'x-mask-loading');
+						var action = (editor.editNode.id == 'new' ? 'insert-galeria' : 'update-galeria');
+						Ext.Ajax.request({
+							url: '<?php echo $this->BaseUrl(); ?>/sistema_galeria/'+action,
+							method: 'POST',
+							params: {
+								gal_idGaleria: editor.editNode.id,
+								gal_idGaleriaPai: editor.editNode.parentNode.id,
+								gal_nome: value
+							},
+							callback: function(options, success, response) {
+								var resp = Ext.util.JSON.decode(response.responseText);
+								wndGaleria.getEl().unmask();
+								Ext.Msg.show({
+									title: wndGaleria.title,
+									msg: resp.message,
+									icon: (resp.success ? Ext.Msg.INFO : Ext.Msg.ERROR),
+									buttons: Ext.Msg.OK,
+									fn: function(button, event) {
+										if (resp.success) {
+											if (editor.editNode.id == 'new') {
+												editor.editNode.setId(resp.gal_idGaleria);
+												editor.editNode.setText(resp.gal_nome);
+												this.treeGalerias.getSelectionModel().fireEvent('selectionchange', this.treeGalerias.getSelectionModel(), editor.editNode);
+											}
+										} else {
+											if (editor.editNode.id == 'new') {
+												this.editorGaleria.editNode = editor.editNode;
+												this.editorGaleria.startEdit(editor.editNode.ui.textNode);
+											} else {
+												editor.editNode.setText(startValue);
+											}
+										}
+									},
+									scope: this
+								});
+							},
+							scope: this
+						});
+					} else {
+						this.editorGaleria.fireEvent('canceledit', editor, value, startValue);
+					}
+            	},
+				canceledit: function(editor, value, startValue) {
+					if (editor.editNode.id == 'new') {
+						editor.editNode.parentNode.removeChild(editor.editNode);
+					} else {
+						editor.editNode.setText(startValue);
+					}
+				},
+				scope: this
+			}
+		});
+		
+		var wndGaleria = new Ext.Window({
+			title: 'Galeria de Arquivos',
+			renderTo: parent,
+			modal: true,
+			constrain: true,
+			maximizable: true,
+			width: 720,
+			height: 500,
+			minWidth: 720,
+			minHeight: 450,
+			layout: 'border',
+			listeners: {
+				show: function(wnd) {
+					for (var i = 0, t = wnd.tabPanel.items.length; i < t; i++) {
+						wnd.tabPanel.setActiveTab(i);
+					}
+					wnd.tabPanel.setActiveTab(0);
+				},
+				beforeclose: function(panel){
+					wndGaleria.tabUpload.destroy();
+				},
+				scope: this
+				
+			},
+			items: [this.treeGalerias, {
+				ref: 'tabPanel',
+				region: 'center',
+				xtype: 'tabpanel',
+				activeTab: 0,
+				layoutOnTabChange: true,
+				margins: '5px 5px 5px 0',
+				plain: true,
+				listeners: {
+					tabchange: function(tab, panel) {
+						this.treeGalerias.setDisabled(tab.getActiveTab().title == 'Upload');
+					},
+					scope: this
+				},
+				items: [{
+					ref: '../tabArquivos',
+					title: 'Arquivos',
+					autoScroll: true,
+					items: this.viewArquivos,
+					bbar: new Ext.PagingToolbar({
+						pageSize: 30,
+						store: this.viewArquivos.getStore(),
+						displayInfo: true,
+						listeners: {
+							render: function(pbar){
+								pbar.refresh.setVisible(false);
+							}
+						}
+					}),
+					tbar: [{
+						ref: '../btnVisualizar',
+						text: 'Visualizar',
+						iconCls: 'icon-view',
+						tooltip: 'Abre a visualização do arquivo selecionado',
+						disabled: true,
+						listeners: {
+							click: function(button, event) {
+								window.open(
+									this.viewArquivos.getStore().getAt(this.viewArquivos.getStore().find('gal_arq_nome', this.viewArquivos.getSelectedNodes()[0].id)).get('gal_arq_base')
+								);
+							},
+							scope: this
+						}
+					}, {
+						ref: '../btnRemover',
+						text: 'Remover',
+						iconCls: 'icon-delete',
+						tooltip: 'Remove o arquivo selecionado',
+						disabled: true,
+						listeners: {
+							click: function(button, event) {
+								if (!button.hidden && !button.disabled) {
+									Ext.Msg.show({
+										title: wndGaleria.title,
+										msg: 'Deseja realmente remover o(s) arquivo(s) selecionado(s)?',
+										icon: Ext.Msg.QUESTION,
+										buttons: Ext.Msg.YESNO,
+										fn: function(button, event) {
+											if ('YES' == button.toUpperCase()) {
+												wndGaleria.getEl().mask('Removendo arquivo(s)...', 'x-mask-loading');
+												var selected = this.viewArquivos.getSelectedNodes();
+												var delIDS = new Array(0);
+												for (var i = 0, t = selected.length; i < t; i++) {
+													delIDS.push(
+														this.viewArquivos.getStore().getAt(this.viewArquivos.getStore().find('gal_arq_nome', selected[i].id)).get('gal_arq_idArquivo')
+													);
+												}
+												Ext.Ajax.request({
+													url: '<?php echo $this->BaseUrl(); ?>/sistema_galeria/delete-arquivo',
+													method: 'POST',
+													params: {arquivos: Ext.util.JSON.encode(delIDS)},
+													callback: function(options, success, response) {
+														var resp = Ext.util.JSON.decode(response.responseText);
+														wndGaleria.getEl().unmask();
+														if (resp.fail.length) {
+															var tpl = new Ext.XTemplate(
+																'<p>Alguns arquivos não puderam ser removidos</p><br />',
+																	'<div class="error-message">',
+																		'<ul>',
+																			'<tpl for="fail">',
+																				'<li><span>{msg}</span></li>',
+																			'</tpl>',
+																		'</ul>',
+																	'</div>'
+															);
+															var message = tpl.apply(resp);
+														} else {
+															var message = 'Arquivos removidos com sucesso';
+														}
+														Ext.Msg.show({
+															title: wndGaleria.title,
+															msg: message,
+															icon: (resp.fail.length ? Ext.Msg.ERROR : Ext.Msg.INFO),
+															buttons: Ext.Msg.OK
+														});
+														//remove da lista os arquivos deletados
+														Ext.each(resp.success, function(idArquivo) {
+															this.viewArquivos.getStore().remove(
+																this.viewArquivos.getStore().getAt(
+																	this.viewArquivos.getStore().find('gal_arq_idArquivo', idArquivo)
+																)
+															);
+														}, this);
+													},
+													scope: this
+												});
+
+											}
+										},
+										scope: this
+									});
+								}
+							},
+							scope: this
+						}
+					}, '-', 'Filtro:', {
+						ref: '../edtFiltro',
+						xtype: 'textfield',
+						selectOnFocus: true,
+						width: 150,
+						disabled: true,
+						listeners: {
+							render: function(field) {
+								field.getEl().on('keyup', function(event) {
+									if(field.getValue()) {
+										this.viewArquivos.getStore().baseParams.nome = wndGaleria.tabArquivos.edtFiltro.getValue();										
+									} else {
+										this.viewArquivos.getStore().baseParams.nome = null;
+									}
+									this.viewArquivos.getStore().load();
+								}, this, {buffer: 1000});
+							},
+							scope: this
+						}
+					}, '->', {
+						ref: '../btnAtualizar',
+						text: 'Atualizar',
+						iconCls: 'icon-refresh',
+						tooltip: 'Recarrega a lista de arquivos',
+						disabled: true,
+						listeners: {
+							click: function(button, event) {
+								this.viewArquivos.getStore().load();
+							},
+							scope: this
+						}
+					}]
+				}, { 
+					ref: '../tabUpload',
+					title: 'Upload',
+					disabled: true,
+					layout: 'fit',
+					items: new Ext.ux.SwfUploadPanel({
+						ref: '../../uplArquivos',
+						debug: false,
+						border: false,
+						file_size_limit: '<?php echo $this->fileSize; ?>',
+						upload_url: '<?php echo $this->BaseUrl(); ?>/sistema_galeria/upload',
+						file_types: '*.jpg; *.jpeg; *.gif; *.swf; *.png; *.pdf; *.doc; *.docx;',
+						file_types_description: 'Arquivos de Imagem',
+						flash_url: '<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ux/upload/swfupload.swf',
+						single_file_select: false,
+						confirm_delete: true,
+						remove_completed: true,
+						listeners: {
+							allUploadsComplete: function() {
+								this.viewArquivos.getStore().load();
+							},
+							fileDialogStart: function(obj) {
+								obj.addPostParam('idGaleria', treeGalerias.getSelectionModel().getSelectedNode().id);
+							},
+							scope: this
+						}
+					})
+				}]
+			}],
+			buttons: [{
+				ref: '../btnSelecionar',
+				text: 'Selecionar',
+				iconCls: 'icon-ok-small',
+				disabled: true,
+				listeners: {
+					click: function(button, event) {
+						if (singleSelect == true) {
+							var retorno = this.viewArquivos.getSelectedRecords()[0].data;
+						} else {
+							var retorno = [];
+							Ext.each(this.viewArquivos.getSelectedRecords(), function(record) {
+								retorno.push(record.data);
+							}, this);
+						}
+						wndGaleria.close();
+						callback.fn.call(callback.scope, retorno);
+					},
+					scope: this
+				}
+			}, {
+				ref: '../btnFechar',
+				text: 'Fechar',
+				iconCls: 'icon-cancel-small',
+				listeners: {
+					click: function(button, event) {
+						wndGaleria.close();
+					},
+					scope: this
+				}
+			}]
+		});
+
+		return wndGaleria;
+	};
+
+	return {
+		init: Ext.emptyFn,
+
+		show: function(config) {
+			Ext.applyIf(config, {
+				parent: document.body,
+				sender: null,
+				singleSelect: false,
+				gallery: null,
+				callback: null,
+				scope: null
+			});
+			callback.fn = config.callback;
+			callback.scope = config.scope;
+
+			var wndGaleria = buildContainer(config.parent, config.gallery, config.singleSelect);
+			wndGaleria.show(config.sender, function() {
+				if (!config.callback) {
+					wndGaleria.btnSelecionar.setVisible(false);
+				}
+			}, this);
+		},
+
+		getUrl: function() {
+			return '<?php echo $this->BaseUrl(); ?>';
+		}
+	}
+}();

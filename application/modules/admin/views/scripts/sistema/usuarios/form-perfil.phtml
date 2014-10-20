@@ -1,0 +1,113 @@
+Ext.namespace('App', 'App.Sistema', 'App.Sistema.PerfisUsuarios');
+
+App.Sistema.PerfisUsuarios.Perfil = function() {
+	function buildContainer(parent) {
+		var container = new Ext.Window({
+			title: 'Cadastro de Perfil',
+			iconCls: 'icon-perfiluser',
+			renderTo: parent || document.body,
+			width: 350,
+			constrain: true,
+			modal: true,
+			focus: function() {
+				container.formPerfil.getForm().findField('per_nome').focus();
+			},
+			listeners: {
+				show: function(wnd) {
+					wnd.center();
+					wnd.formPerfil.getForm().isValid();
+				},
+				scope: this
+			},	
+			items: new Ext.form.FormPanel({
+				ref: 'formPerfil',
+				method: 'POST',
+				monitorValid: true,
+				border: false,
+				bodyStyle: 'padding: 10px',
+				buttonAlign: 'right',
+				labelWidth: 60,
+				reader: new Ext.data.JsonReader({
+					id: 'idPerfil',
+					root: 'perfil',
+					successProperty: 'success'
+				}, ['per_idPerfil', 'per_nome']),
+				errorReader: new Ext.data.JsonReader({
+					root: 'errors',
+					successProperty: 'success'
+				}, ['id', 'msg']),
+				listeners: {
+					beforeaction: function(form, action) {
+						var token = (action.type == 'submit' ? 'Salvando dados...' : 'Carregando dados...');
+						container.formPerfil.getEl().mask(token, 'x-mask-loading');
+					},
+					actionfailed: function(form, action) {
+						container.formPerfil.getEl().unmask();
+						if (action.type == 'submit') {
+							Ext.Msg.show({
+								title: container.title,
+								msg: form.errorReader.jsonData.message,
+								icon: Ext.Msg.ERROR,
+								buttons: Ext.Msg.OK
+							});
+						}
+					},
+					actioncomplete: function(form, action) {
+						container.formPerfil.getEl().unmask();
+					},
+					scope: this
+				},
+				items: [{
+					xtype: 'textfield',
+					name: 'per_idPerfil',
+					inputType: 'hidden'
+				}, {
+					xtype: 'textfield',
+					name: 'per_nome',
+					fieldLabel: 'Nome',
+					maxLength: 40,
+					allowBlank: false,
+					anchor: '100%'
+				}],
+				buttons: [{
+					ref: '../btnSalvar',
+					text: 'Salvar',
+					formBind: true,
+					iconCls: 'icon-save-small',
+					listeners: {
+						click: function(button, event) {
+							var form = container.formPerfil.getForm();
+							if (form.isValid()) {
+								form.submit({
+									url: String.format('<?php echo $this->BaseUrl(); ?>/sistema_usuarios/{0}', (form.findField('per_idPerfil').getValue() ? 'perfil-update' : 'perfil-insert'))
+								});
+							}
+						},
+						scope: this
+					}
+				}, {
+					ref: '../btnCancelar',
+					text: 'Cancelar',
+					iconCls: 'icon-save-cancel-small',
+					listeners: {
+						click: function(button, event) {
+							container.close();
+						},
+						scope: this
+					}
+				}]
+			})
+		});
+
+		return container;
+	};
+
+	return {
+		init: Ext.emptyFn,
+
+		create: function(parent) {
+			var wndPerfil = buildContainer(parent);
+			return wndPerfil;
+		}
+	}
+}();

@@ -1,0 +1,159 @@
+Ext.namespace('App', 'App.Sistema', 'App.Sistema.PerfisUsuarios');
+
+App.Sistema.PerfisUsuarios.Usuario = function() {
+	function buildContainer(parent) {
+		var container = new Ext.Window({
+			title: 'Cadastro de Usuário',
+			iconCls: 'icon-perfiluser',
+			renderTo: parent || document.body,
+			width: 400,
+			constrain: true,
+			modal: true,
+			resizable: false,
+			focus: function() {
+				container.formUsuario.getForm().findField('usr_nome').focus();
+			},
+			listeners: {
+				show: function(wnd) {
+					wnd.center();
+					wnd.formUsuario.getForm().isValid();
+				},
+				scope: this
+			},
+			items: new Ext.form.FormPanel({
+				ref: 'formUsuario',
+				method: 'POST',
+				monitorValid: true,
+				border: false,
+				bodyStyle: 'padding: 10px',
+				buttonAlign: 'right',
+				labelWidth: 60,
+				reader: new Ext.data.JsonReader({
+					id: 'idUsuario',
+					root: 'usuario',
+					successProperty: 'success'
+				}, ['usr_idUsuario', 'usr_idPerfil', 'usr_login', 'usr_senha', 'usr_nome', 'usr_email', 'usr_status']),
+				errorReader: new Ext.data.JsonReader({
+					root: 'errors',
+					successProperty: 'success'
+				}, ['id', 'msg']),
+				listeners: {
+					beforeaction: function(form, action) {
+						var token = (action.type == 'submit' ? 'Salvando dados...' : 'Carregando dados...');
+						container.formUsuario.getEl().mask(token, 'x-mask-loading');
+					},
+					actionfailed: function(form, action) {
+						container.formUsuario.getEl().unmask();
+						if (action.type == 'submit') {
+							Ext.Msg.show({
+								title: container.title,
+								msg: form.errorReader.jsonData.message,
+								icon: Ext.Msg.ERROR,
+								buttons: Ext.Msg.OK
+							});
+						}
+					},
+					actioncomplete: function(form, action) {
+						container.formUsuario.getEl().unmask();
+					},
+					scope: this
+				},
+				items: [{
+					xtype: 'textfield',
+					name: 'usr_idUsuario',
+					inputType: 'hidden'
+				}, {
+					xtype: 'textfield',
+					name: 'usr_idPerfil',
+					inputType: 'hidden'
+				}, {
+					xtype: 'textfield',
+					name: 'usr_nome',
+					fieldLabel: 'Nome',
+					maxLength: 60,
+					allowBlank: false,
+					anchor: '100%'
+				}, {
+					xtype: 'textfield',
+					name: 'usr_email',
+					fieldLabel: 'E-mail',
+					maxLength: 60,
+					vtype: 'email',
+					allowBlank: false,
+					anchor: '100%'
+				}, {
+					xtype: 'textfield',
+					name: 'usr_login',
+					fieldLabel: 'Login',
+					maxLength: 15,
+					allowBlank: false,
+					anchor: '100%'
+				}, {
+					xtype: 'textfield',
+					inputType: 'password',
+					name: 'usr_senha',
+					fieldLabel: 'Senha',
+					minLength: 5,
+					maxLength: 15,
+					allowBlank: false,
+					anchor: '100%'
+				}, {
+					xtype: 'combo',
+					name: 'usr_status',
+					hiddenName: 'usr_status',
+					fieldLabel: 'Status',
+					store: new Ext.data.SimpleStore({
+						fields: ['key', 'value'],
+						data: [<?php echo $this->Php2ExtFilter(App_Funcoes_Rotulos::$status); ?>]
+					}),
+					valueField: 'key',
+					displayField: 'value',
+					typeAhead: true,
+					mode: 'local',
+					triggerAction: 'all',
+					editable: false,
+					allowBlank: false,
+					anchor: '100%'
+				}],
+				buttons: [{
+					ref: '../btnSalvar',
+					text: 'Salvar',
+					formBind: true,
+					iconCls: 'icon-save-small',
+					listeners: {
+						click: function(button, event) {
+							var form = container.formUsuario.getForm();
+							if (form.isValid()) {
+								form.submit({
+									url: String.format('<?php echo $this->BaseUrl(); ?>/sistema_usuarios/{0}', (form.findField('usr_idUsuario').getValue() ? 'usuario-update' : 'usuario-insert'))
+								});
+							}
+						},
+						scope: this
+					}
+				}, {
+					ref: '../btnCancelar',
+					text: 'Cancelar',
+					iconCls: 'icon-save-cancel-small',
+					listeners: {
+						click: function(button, event) {
+							container.close();
+						},
+						scope: this
+					}
+				}]
+			})
+		});
+
+		return container;
+	};
+
+	return {
+		init: Ext.emptyFn,
+
+		create: function(parent) {
+			var wndUsuario = buildContainer(parent);
+			return wndUsuario;
+		}
+	}
+}();

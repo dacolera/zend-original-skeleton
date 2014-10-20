@@ -1,0 +1,492 @@
+@import url(font.css);
+
+/* DESKTOP */
+
+@media only screen and (min-width : 1024px){
+
+.ei-slider{
+	position: relative;
+	width: 100%;
+	max-width: 1920px;
+	height: 100%;
+	margin: 0 auto;
+	top: -1px;
+}
+.ei-slider-loading{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index:999;
+	background: rgba(0,0,0,0.9);
+	color: #fff;
+	text-align: center;
+	line-height: 400px;
+}
+.ei-slider-large{
+	height: 414px;
+	width: 100%;
+	position:relative;
+	overflow: hidden;
+	float: left;
+	margin-top: 0;
+}
+
+.ei-slider-large li{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+}
+.ei-slider-large li img{
+	width: 100%;
+	margin-top: -13px !important;
+}
+
+@-moz-document url-prefix() { 
+	.ei-slider-large li img{
+		width: 100%;
+		margin-top: 0 !important;
+	}
+}
+
+.ei-title{
+	position: absolute;
+	left: 59%;
+	margin-right: 0;
+	top: 6%;
+}
+.ei-title h2, .ei-title h3{
+	text-align: right;
+}
+.ei-title h2{
+	width: 200px;
+	height: 103px;
+	background-image: url(../images/logo-tele-gps.png);
+	margin-bottom: 5px;
+}
+.ei-title h3{
+	font-size: 3.0em;
+	color: #fff;
+	width: 441px;
+	text-transform: uppercase;
+	text-align: left;
+	width: 300px;
+	font-family: 'aller_light';
+}
+
+.ei-title p
+{
+	color: #fff;
+	font-size: 1.6em;
+	display: block;
+	width: 343px;
+	margin-bottom: 20px;
+}
+.ei-title a
+{
+	background-color: #d8e00d;
+	background-image: url(../images/seta-btn-banner.png);
+	background-position: 14px 8px;
+	background-repeat: no-repeat;
+	font-size: 1.4em;
+	color: #5e610a;
+	font-family: 'aller_bold';
+	padding: 0px 18px 5px 34px;
+}
+.ei-slider-thumbs{
+	height: 13px;
+	left: 246px;
+	top: -44px;
+	position: relative;
+	border-top: 1px dotted #fff;
+	z-index: 500;
+	width: 543px;
+	float: left;
+}
+.ei-slider-thumbs li{
+	position: relative;
+	float: left;
+	height: 100%;
+	list-style: none;
+}
+.ei-slider-thumbs li.ei-slider-element{
+	top: 0px;
+	left: 0px;
+	position: absolute;
+	height: 100%;
+	z-index: 10;
+	text-indent: -9000px;
+	background: #fff;
+	background: rgba(255,255,255,0.9);
+}
+.ei-slider-thumbs li a{
+	padding: 18px 0 0 8px;
+	font-size: 1.3em;
+	color: #fff;
+	border-left: 1px solid #fff;
+	margin-top: -8px;
+	display: block;
+	background: transparent;
+	width: 94%;
+	height: 100%;
+	cursor: pointer;
+	-webkit-transition: background 0.2s ease;
+    -moz-transition: background 0.2s ease;
+    -o-transition: background 0.2s ease;
+    -ms-transition: background 0.2s ease;
+    transition: background 0.2s ease;
+}
+.ei-slider-thumbs li a:hover{
+	background-color: #f0f0f0;
+}
+
+.ei-slider-thumbs li img{
+	display: none;
+	position: absolute;
+	bottom: 50px;
+	opacity: 0;
+	z-index: 999;
+	max-width: 100%;
+	-webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    -ms-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+	-webkit-box-reflect: 
+        below 0px -webkit-gradient(
+            linear, 
+            left top, 
+            left bottom, 
+            from(transparent), 
+            color-stop(50%, transparent), 
+            to(rgba(255,255,255,0.3))
+            );
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
+.ei-slider-thumbs li:hover img{
+	opacity: 1;
+	bottom: 13px;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+}
+
+}
+
+
+/* TABLET */
+
+@media only screen and (min-width : 768px) and (max-width : 1023px){
+
+.ei-slider{
+	position: relative;
+	width: 100%;
+	max-width: 1920px;
+	height: 100%;
+	margin: 0 auto;
+}
+.ei-slider-loading{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index:999;
+	background: rgba(0,0,0,0.9);
+	color: #fff;
+	text-align: center;
+	line-height: 400px;
+}
+.ei-slider-large{
+	height: 100%;
+	width: 100%;
+	position:relative;
+	overflow: hidden;
+}
+.ei-slider-large li{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+}
+.ei-slider-large li img{
+	width: 100%;
+}
+.ei-title{
+	position: absolute;
+	left: 55%;
+	margin-right: 0;
+	top: 10%;
+}
+.ei-title h2, .ei-title h3{
+	text-align: right;
+}
+.ei-title h2{
+	width: 200px;
+	height: 103px;
+	background-image: url(../images/logo-tele-gps.png);
+	margin-bottom: 5px;
+}
+.ei-title h3{
+	font-size: 3.0em;
+	color: #fff;
+	width: 441px;
+	text-transform: uppercase;
+	text-align: left;
+	width: 300px;
+	font-family: 'aller_light';
+}
+
+.ei-title p
+{
+	color: #fff;
+	font-size: 1.6em;
+	display: block;
+	width: 343px;
+	margin-bottom: 20px;
+}
+.ei-title a
+{
+	background-color: #d8e00d;
+	background-image: url(../images/seta-btn-banner.png);
+	background-position: 14px 8px;
+	background-repeat: no-repeat;
+	font-size: 1.4em;
+	color: #5e610a;
+	font-family: 'aller_bold';
+	padding: 0px 18px 5px 34px;
+}
+.ei-slider-thumbs{
+	height: 13px;
+	left: 22px;
+	top: -44px;
+	position: relative;
+	border-top: 1px dotted #fff;
+	z-index: 500;
+	width: 543px;
+}
+.ei-slider-thumbs li{
+	position: relative;
+	float: left;
+	height: 100%;
+	list-style: none;
+}
+.ei-slider-thumbs li.ei-slider-element{
+	top: 0px;
+	left: 0px;
+	position: absolute;
+	height: 100%;
+	z-index: 10;
+	text-indent: -9000px;
+	background: #fff;
+	background: rgba(255,255,255,0.9);
+}
+.ei-slider-thumbs li a{
+	padding: 18px 0 0 8px;
+	font-size: 1.3em;
+	color: #fff;
+	border-left: 1px solid #fff;
+	margin-top: -8px;
+	display: block;
+	background: transparent;
+	width: 94%;
+	height: 100%;
+	cursor: pointer;
+	-webkit-transition: background 0.2s ease;
+    -moz-transition: background 0.2s ease;
+    -o-transition: background 0.2s ease;
+    -ms-transition: background 0.2s ease;
+    transition: background 0.2s ease;
+}
+.ei-slider-thumbs li a:hover{
+	background-color: #f0f0f0;
+}
+.ei-slider-thumbs li img{
+	position: absolute;
+	bottom: 50px;
+	opacity: 0;
+	z-index: 999;
+	max-width: 100%;
+	-webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    -ms-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+	-webkit-box-reflect: 
+        below 0px -webkit-gradient(
+            linear, 
+            left top, 
+            left bottom, 
+            from(transparent), 
+            color-stop(50%, transparent), 
+            to(rgba(255,255,255,0.3))
+            );
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
+.ei-slider-thumbs li:hover img{
+	opacity: 1;
+	bottom: 13px;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+}
+
+}
+
+
+/* MOBILE */
+
+@media only screen and (min-width : 320px) and (max-width : 767px) {
+
+.ei-slider{
+	position: relative;
+	width: 100%;
+	max-width: 1920px;
+	height: 100%;
+	margin: 0 auto;
+}
+.ei-slider-loading{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index:999;
+	background: rgba(0,0,0,0.9);
+	color: #fff;
+	text-align: center;
+	line-height: 400px;
+}
+.ei-slider-large{
+	height: 100%;
+	width: 100%;
+	position:relative;
+	overflow: hidden;
+}
+.ei-slider-large li{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+}
+.ei-slider-large li img{
+	width: 100%;
+}
+.ei-title{
+	position: absolute;
+	left: 5%;
+	margin-right: 0;
+	top: 18%;
+}
+.ei-title h2, .ei-title h3{
+	text-align: right;
+}
+.ei-title h2{
+	display: none;
+}
+.ei-title h3{
+	font-size: 3.0em;
+	color: #fff;
+	width: 441px;
+	text-transform: uppercase;
+	text-align: left;
+	width: 300px;
+	font-family: 'aller_light';
+	margin-bottom: 20px;
+}
+
+.ei-title p
+{
+	color: #fff;
+	font-size: 1.6em;
+	display: block;
+	width: 343px;
+	margin-bottom: 120px;
+}
+.ei-title a
+{
+	background-color: #d8e00d;
+	background-image: url(../images/seta-btn-banner.png);
+	background-position: 14px 13px;
+	background-repeat: no-repeat;
+	font-size: 1.4em;
+	color: #5e610a;
+	font-family: 'aller_bold';
+	padding: 0px 18px 5px 34px;
+	text-transform: uppercase;
+}
+.ei-slider-thumbs{
+	height: 13px;
+	position: relative;
+	z-index: 500;
+	width: 100%;
+	bottom:34px;
+}
+.ei-slider-thumbs li{
+	position: relative;
+	float: left;
+	height: 100%;
+	list-style: none;
+}
+.ei-slider-thumbs li.ei-slider-element{
+	top: 0px;
+	left: 0px;
+	position: absolute;
+	height: 17px;
+	z-index: 10;
+	text-indent: -9000px;
+	background-image: url(../images/mobile/bg-timer-active.jpg);
+}
+.ei-slider-thumbs li a{
+	font-size: 1.3em;
+	color: #fff;
+	border-left: 1px solid #fff;
+	border-right: 1px solid #fff;
+	display: block;
+	background-image: url(../images/mobile/bg-timer.jpg);
+	width: 100%;
+	height: 17px;
+	text-indent: -9000px;
+	cursor: pointer;
+	-webkit-transition: background 0.2s ease;
+    -moz-transition: background 0.2s ease;
+    -o-transition: background 0.2s ease;
+    -ms-transition: background 0.2s ease;
+    transition: background 0.2s ease;
+}
+.ei-slider-thumbs li a:hover{
+	background-image: url(../images/mobile/bg-timer-active.jpg);
+}
+.ei-slider-thumbs li img{
+	position: absolute;
+	bottom: 50px;
+	opacity: 0;
+	z-index: 999;
+	max-width: 100%;
+	-webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    -ms-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+	-webkit-box-reflect: 
+        below 0px -webkit-gradient(
+            linear, 
+            left top, 
+            left bottom, 
+            from(transparent), 
+            color-stop(50%, transparent), 
+            to(rgba(255,255,255,0.3))
+            );
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
+.ei-slider-thumbs li:hover img{
+	opacity: 1;
+	bottom: 13px;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+}
+
+}

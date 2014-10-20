@@ -1,0 +1,552 @@
+Ext.namespace('App', 'App.Sistema', 'App.Sistema.Configuracoes');
+
+App.Sistema.Configuracoes = function() {
+	function buildContainer() {
+	
+		var wndConfig = new Ext.Window({
+			title: 'Configurações Gerais',
+			iconCls: 'icon-tools-small',
+			width: 650,
+			modal: true,
+			constrain: true,
+			resizable: false,
+			listeners: {
+				show: function(wnd) {
+					wnd.center();
+					wnd.formDados.getForm().load();
+					
+					var tab = wnd.items.get(0).items.get(0);
+					for(var t = 0; t < tab.items.getCount(); t++) {
+						tab.setActiveTab(t);
+					}
+					tab.setActiveTab(0);
+				},
+				scope: this
+			},
+			items: new Ext.form.FormPanel({
+				ref: 'formDados',
+				url: '<?php echo $this->BaseUrl(); ?>/sistema_configuracoes/index/acao/load',
+				baseParams: {conf_emailFaleConosco: null, conf_emailRepresentante: null, conf_emailMaisInformacoes: null},
+				method: 'POST',
+				border: false,
+				monitorValid: true,
+				buttonAlign: 'right',
+				reader: new Ext.data.JsonReader({
+					root: 'configuracoes',
+					successProperty: 'success'
+				}, [
+					'conf_formaEnvioEmail',
+					'conf_servidorEmail', 
+					'conf_emailRemetente',
+					'conf_emailFaleConosco',
+					'conf_emailRepresentante',
+					'conf_emailMaisInformacoes',
+					'conf_nomeRemetente',  
+					'conf_replyTo',
+					'conf_portaEmail',
+					'conf_senhaEmail'
+				]),
+				errorReader: new Ext.data.JsonReader({
+					id: 'id',
+					root: 'errors',
+					successProperty: 'success'
+				}, ['id', 'msg']),
+				listeners: {
+					beforeaction: function(form, action) {
+						var token = (action.type == 'submit' ? 'Salvando dados...' : 'Carregando dados...');
+						wndConfig.getEl().mask(token, 'x-mask-loading');
+						
+						if (action.type == 'submit') {
+
+							// Fale Conosco
+							var arrFaleConosco = [];
+							wndConfig.tabFaleConosco.gridFaleConosco.store.each(function(record) {
+								arrFaleConosco.push({
+									fale_id: record.get('fale_id'),
+									fale_departamento: record.get('fale_departamento'),
+									fale_email: record.get('fale_email')
+								});
+							}, this);
+							form.baseParams.conf_emailFaleConosco = Ext.util.JSON.encode(arrFaleConosco);
+							
+							// Representante
+							var arrRepresentante = [];
+							wndConfig.tabRepresentante.gridRepresentante.store.each(function(record) {
+								arrRepresentante.push({
+									representante_email: record.get('representante_email')
+								});
+							}, this);
+							form.baseParams.conf_emailRepresentante = Ext.util.JSON.encode(arrRepresentante);
+							
+							// Mais Informações
+							var arrMaisInformacoes = [];
+							wndConfig.tabMaisInformacoes.gridMaisInformacoes.store.each(function(record) {
+								arrMaisInformacoes.push({
+									maisinformacoes_id: record.get('maisinformacoes_id'),
+									maisinformacoes_servicos: record.get('maisinformacoes_servicos'),
+									maisinformacoes_email: record.get('maisinformacoes_email')
+								});
+							}, this);
+							form.baseParams.conf_emailMaisInformacoes = Ext.util.JSON.encode(arrMaisInformacoes);
+						}
+					},
+					actioncomplete: function(form, action) {
+						wndConfig.getEl().unmask();
+						if (action.type == 'submit') {
+							Ext.Msg.show({
+								title: wndConfig.title,
+								msg: form.errorReader.jsonData.message,
+								icon: Ext.Msg.INFO,
+								buttons: Ext.Msg.OK,
+								fn: function() {
+									wndConfig.close();
+								},
+								scope: this
+							});
+						} else if(action.type == 'load') {
+							var combo = form.findField('conf_formaEnvioEmail');
+							var index = combo.store.find('sigla', combo.getValue());
+							combo.fireEvent('select', combo, combo.store.getAt(index), index);
+							
+							wndConfig.tabFaleConosco.gridFaleConosco.store.loadData(action.result.data.conf_emailFaleConosco);
+							wndConfig.tabRepresentante.gridRepresentante.store.loadData(action.result.data.conf_emailRepresentante);
+							wndConfig.tabMaisInformacoes.gridMaisInformacoes.store.loadData(action.result.data.conf_emailMaisInformacoes);
+						}
+					},
+					actionfailed: function(form, action) {
+						wndConfig.getEl().unmask();
+						Ext.Msg.show({
+							title: wndConfig.title,
+							msg: (action.type == 'submit' ? form.errorReader.jsonData.message : form.reader.jsonData.message),
+							icon: Ext.Msg.ERROR,
+							buttons: Ext.Msg.OK,
+							fn: function() {
+								if (action.type == 'load') {
+									wndConfig.close();
+								}
+							},
+							scope: this
+						});
+					},
+					scope: this
+				},
+				items: [{
+					xtype: 'tabpanel',
+					activeTab: 0,
+					layoutOnTabChange: true,
+					border: false,
+					forceLayout: true,
+					hideBorders: true,
+					height: 300,
+					items: [{
+						title: 'Geral',
+						layout: 'form',
+						labelAlign: 'top',
+						bodyStyle: 'padding: 10px',
+						items: [{
+							xtype: 'fieldset',
+							title: 'Configuração de disparo de e-mail',
+							hideBorders: true,
+							border: true,
+							labelAlign: 'top',
+							autoHeight: true,
+							layout: 'column',
+							items: [{
+								columnWidth: 1,
+								bodyStyle: 'padding-bottom: 10px',
+								layout: 'form',
+								items: [{
+									xtype: 'panel',
+									border: false,
+									hideBorders: true,
+									anchor: '100%',
+									html: '<p>Alguns servidores requerem autenticação para mandar e-mails corretamente, caso seja o seu caso, preencha todos os campos abaixo para o funcionamento adequado do sistema.</p>'
+								}]
+							}, {
+								columnWidth: .3,
+								bodyStyle: 'padding-right: 10px',
+								layout: 'form',
+								items: [{
+									xtype: 'combo',
+									name: 'conf_formaEnvioEmail',
+									hiddenName: 'conf_formaEnvioEmail',
+									fieldLabel: 'Forma de Envio',
+									store:  new Ext.data.SimpleStore({
+										fields: ['sigla', 'texto'],
+										data: [<?php echo $this->Php2ExtFilter(App_Funcoes_Rotulos::$formaEnvio); ?>]
+									}),
+									valueField: 'sigla',
+									displayField: 'sigla',
+									typeAhead: true,
+									triggerAction: 'all',
+									mode: 'local',
+									editable: false,
+									allowBlank: false,
+									anchor: '100%',
+									listeners: {
+										select: function(field) {
+											var form = wndConfig.items.get(0).getForm();
+											var formaEnvio = field.getValue();
+											form.findField('conf_servidorEmail').setDisabled(formaEnvio != 'SMTP');
+											form.findField('conf_senhaEmail').setDisabled(formaEnvio != 'SMTP');
+										},
+										scope:this
+									}
+								}]
+							}, {
+								columnWidth: .2,
+								layout: 'form',
+								bodyStyle: 'padding-right: 10px',
+								items: [{
+									xtype: 'textfield',
+									name: 'conf_portaEmail',
+									fieldLabel: 'Porta',
+									anchor: '100%'
+								}]
+							}, {
+								columnWidth: .5,
+								layout: 'form',
+								items: [{
+									xtype: 'textfield',
+									name: 'conf_servidorEmail',
+									fieldLabel: 'Servidor de E-mail',
+									anchor: '100%'
+								}]
+							}, {
+								columnWidth: .5,
+								bodyStyle: 'padding-right: 10px',
+								layout: 'form',
+								items: [{
+									xtype: 'textfield',
+									name: 'conf_emailRemetente',
+									fieldLabel: 'E-Mail do Remetente',
+									allowBlank: false,
+									anchor: '100%'
+								}]
+							}, {
+								columnWidth: .5,
+								layout: 'form',
+								items: [{
+									xtype: 'textfield',
+									name: 'conf_senhaEmail',
+									fieldLabel: 'Senha do E-mail',
+									anchor: '100%'
+								}]
+							}, {
+								columnWidth: .5,
+								layout: 'form',
+								bodyStyle: 'padding-right: 10px',
+								items: [{
+									xtype: 'textfield',
+									name: 'conf_nomeRemetente',
+									fieldLabel: 'Nome do Remetente',
+									anchor: '100%'
+								}]
+							}, {
+								columnWidth: .5,
+								layout: 'form',
+								items: [{
+									xtype: 'textfield',
+									name: 'conf_replyTo',
+									fieldLabel: 'E-Mail para Resposta',
+									anchor: '100%'
+								}]
+							}]
+						}]
+					}, {
+						ref: '../../tabFaleConosco',
+						title: 'Fale Conosco',
+						layout: 'form',
+						labelAlign: 'top',
+						items: [{
+							xtype: 'panel',
+							hideBorders: true,
+							border: false,
+							labelAlign: 'top',
+							autoHeight: true,
+							layout: 'form',
+							items: [{
+								ref: '../gridFaleConosco',
+								height: 280,
+								xtype: 'editorgrid',
+								store: new Ext.data.SimpleStore({
+									fields: [
+										{name: 'fale_id', mapping: 'fale_id', type: 'numeric'},
+										{name: 'fale_departamento', mapping: 'fale_departamento'},
+										{name: 'fale_email', mapping: 'fale_email'}
+									],
+									data: []
+								}),
+								colModel: new Ext.grid.ColumnModel({
+									defaults: { sortable: true },
+									columns: [
+										{header: 'ID', dataIndex: 'fale_id', width: 30, 
+											editor: new Ext.form.NumberField({
+												allowBlank: false, 
+												allowNegative: false, 
+												minValue: 1, 
+												style: 'text-align:left'
+											})
+										},
+										{header: 'Departamento', dataIndex: 'fale_departamento', width: 100,
+											editor: new Ext.form.TextField({
+												allowBlank: false,
+												maxLength: 100,
+												style: 'text-align:left'
+											})
+										},
+										{header: 'E-mails de Destino', dataIndex: 'fale_email', width: 200,
+											editor: new Ext.form.TextField({
+												allowBlank: false,
+												maxLength: 100,
+												style: 'text-align:left'
+											})
+										}
+									]
+								}),
+								selModel: new Ext.grid.RowSelectionModel({
+									singleSelect: false
+								}),
+								view: new Ext.grid.GridView({
+									forceFit: true,
+									emptyText: 'Sem registros para exibição'
+								}),
+								enableHdMenu: true,
+								clicksToEdit: 'auto',
+								stripeRows: true,
+								tbar: [{
+						        	text: 'Adicionar',
+						        	iconCls: 'icon-insert',
+						        	listeners: {
+							        	click: function(button, event) {
+											var rData = Ext.data.Record.create(wndConfig.tabFaleConosco.gridFaleConosco.getStore().fields);
+											var newRecord = new rData({
+												fale_id: '',
+												fale_departamento: '',
+												fale_email: ''
+											});
+											wndConfig.tabFaleConosco.gridFaleConosco.getStore().addSorted(newRecord);
+											wndConfig.tabFaleConosco.gridFaleConosco.getSelectionModel().selectRow(wndConfig.tabFaleConosco.gridFaleConosco.getStore().indexOf(newRecord));
+											wndConfig.tabFaleConosco.gridFaleConosco.startEditing(wndConfig.tabFaleConosco.gridFaleConosco.getStore().indexOf(newRecord), 0);
+							        	},
+							        	scope: this
+							        }
+						        }, {
+						        	text: 'Remover',
+						        	iconCls: 'icon-delete',
+						        	handler: function(event, toolEl, panel, tc) {
+						        		var selections = wndConfig.tabFaleConosco.gridFaleConosco.getSelectionModel().getSelections();
+										for (var i = 0, t = selections.length; i < t; i++) {
+											wndConfig.tabFaleConosco.gridFaleConosco.getStore().remove(selections[i]);
+										}
+						        	},
+						        	scope: this
+						        }]
+							}]
+						}]
+					}, {
+						ref: '../../tabRepresentante',
+						title: 'Seja um Representante',
+						layout: 'form',
+						labelAlign: 'top',
+						items: [{
+							xtype: 'panel',
+							hideBorders: true,
+							border: false,
+							labelAlign: 'top',
+							autoHeight: true,
+							layout: 'form',
+							items: [{
+								ref: '../gridRepresentante',
+								height: 280,
+								xtype: 'editorgrid',
+								store: new Ext.data.SimpleStore({
+									fields: [
+										{name: 'representante_email', mapping: 'representante_email'}
+									],
+									data: []
+								}),
+								colModel: new Ext.grid.ColumnModel({
+									defaults: { sortable: true },
+									columns: [
+										{header: 'E-mails de Destino', dataIndex: 'representante_email', width: 120, 
+											editor: new Ext.form.TextField({
+												allowBlank: false, 
+												maxLength: 100, 
+												style: 'text-align:left'
+											})
+										}
+									]
+								}),
+								selModel: new Ext.grid.RowSelectionModel({
+									singleSelect: false
+								}),
+								view: new Ext.grid.GridView({
+									forceFit: true,
+									emptyText: 'Sem registros para exibição'
+								}),
+								enableHdMenu: true,
+								clicksToEdit: 'auto',
+								stripeRows: true,
+								tbar: [{
+						        	text: 'Adicionar',
+						        	iconCls: 'icon-insert',
+						        	listeners: {
+							        	click: function(button, event) {
+											var rData = Ext.data.Record.create(wndConfig.tabRepresentante.gridRepresentante.getStore().fields);
+											var newRecord = new rData({
+												representante_email: ''
+											});
+											wndConfig.tabRepresentante.gridRepresentante.getStore().addSorted(newRecord);
+											wndConfig.tabRepresentante.gridRepresentante.getSelectionModel().selectRow(wndConfig.tabRepresentante.gridRepresentante.getStore().indexOf(newRecord));
+											wndConfig.tabRepresentante.gridRepresentante.startEditing(wndConfig.tabRepresentante.gridRepresentante.getStore().indexOf(newRecord), 0);
+							        	},
+							        	scope: this
+							        }
+						        }, {
+						        	text: 'Remover',
+						        	iconCls: 'icon-delete',
+						        	handler: function(event, toolEl, panel, tc) {
+						        		var selections = wndConfig.tabRepresentante.gridRepresentante.getSelectionModel().getSelections();
+										for (var i = 0, t = selections.length; i < t; i++) {
+											wndConfig.tabRepresentante.gridRepresentante.getStore().remove(selections[i]);
+										}
+						        	},
+						        	scope: this
+						        }]
+							}]
+						}]
+					}, {
+						ref: '../../tabMaisInformacoes',
+						title: 'Mais Informações',
+						layout: 'form',
+						labelAlign: 'top',
+						items: [{
+							xtype: 'panel',
+							hideBorders: true,
+							border: false,
+							labelAlign: 'top',
+							autoHeight: true,
+							layout: 'form',
+							items: [{
+								ref: '../gridMaisInformacoes',
+								height: 280,
+								xtype: 'editorgrid',
+								store: new Ext.data.SimpleStore({
+									fields: [
+										{name: 'maisinformacoes_id', mapping: 'maisinformacoes_id', type: 'numeric'},
+										{name: 'maisinformacoes_servicos', mapping: 'maisinformacoes_servicos'},
+										{name: 'maisinformacoes_email', mapping: 'maisinformacoes_email'}
+									],
+									data: []
+								}),
+								colModel: new Ext.grid.ColumnModel({
+									defaults: { sortable: true },
+									columns: [
+										{header: 'ID', dataIndex: 'maisinformacoes_id', width: 30, 
+											editor: new Ext.form.NumberField({
+												allowBlank: false, 
+												allowNegative: false, 
+												minValue: 1, 
+												style: 'text-align:left'
+											})
+										},
+										{header: 'Serviço', dataIndex: 'maisinformacoes_servicos', width: 100,
+											editor: new Ext.form.TextField({
+												allowBlank: false,
+												maxLength: 100,
+												style: 'text-align:left'
+											})
+										},
+										{header: 'E-mails de Destino', dataIndex: 'maisinformacoes_email', width: 200,
+											editor: new Ext.form.TextField({
+												allowBlank: false,
+												maxLength: 100,
+												style: 'text-align:left'
+											})
+										}
+									]
+								}),
+								selModel: new Ext.grid.RowSelectionModel({
+									singleSelect: false
+								}),
+								view: new Ext.grid.GridView({
+									forceFit: true,
+									emptyText: 'Sem registros para exibição'
+								}),
+								enableHdMenu: true,
+								clicksToEdit: 'auto',
+								stripeRows: true,
+								tbar: [{
+						        	text: 'Adicionar',
+						        	iconCls: 'icon-insert',
+						        	listeners: {
+							        	click: function(button, event) {
+											var rData = Ext.data.Record.create(wndConfig.tabMaisInformacoes.gridMaisInformacoes.getStore().fields);
+											var newRecord = new rData({
+												maisinformacoes_id: '',
+												maisinformacoes_servicos: '',
+												maisinformacoes_email: ''
+											});
+											wndConfig.tabMaisInformacoes.gridMaisInformacoes.getStore().addSorted(newRecord);
+											wndConfig.tabMaisInformacoes.gridMaisInformacoes.getSelectionModel().selectRow(wndConfig.tabMaisInformacoes.gridMaisInformacoes.getStore().indexOf(newRecord));
+											wndConfig.tabMaisInformacoes.gridMaisInformacoes.startEditing(wndConfig.tabMaisInformacoes.gridMaisInformacoes.getStore().indexOf(newRecord), 0);
+							        	},
+							        	scope: this
+							        }
+						        }, {
+						        	text: 'Remover',
+						        	iconCls: 'icon-delete',
+						        	handler: function(event, toolEl, panel, tc) {
+						        		var selections = wndConfig.tabMaisInformacoes.gridMaisInformacoes.getSelectionModel().getSelections();
+										for (var i = 0, t = selections.length; i < t; i++) {
+											wndConfig.tabMaisInformacoes.gridMaisInformacoes.getStore().remove(selections[i]);
+										}
+						        	},
+						        	scope: this
+						        }]
+							}]
+						}]
+					}]
+				}],
+				buttons: [{
+					text: 'Salvar',
+					formBind: true,
+					iconCls: 'icon-save-small',
+					listeners: {
+						click: function(button, event) {
+							var valido = true;
+							var form = wndConfig.items.get(0).getForm();
+							
+							if (form.isValid() && valido) {
+								form.submit({
+									url: '<?php echo $this->BaseUrl(); ?>/sistema_configuracoes/index/acao/update'
+								});
+							}
+						},
+						scope: this
+					}
+				}, {
+					text: 'Cancelar',
+					iconCls: 'icon-save-cancel-small',
+					listeners: {
+						click: function(button, event) {
+							wndConfig.close();
+						},
+						scope: this
+					}
+				}]
+			})
+		});
+			
+		return wndConfig;
+	}
+
+	return {
+		init: Ext.emptyFn,
+		show: function() {
+			var wnd = buildContainer();
+			wnd.show();
+		}
+	}
+}();

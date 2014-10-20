@@ -1,0 +1,220 @@
+<?php echo $this->Doctype('XHTML1_STRICT'); echo "\n"; ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<?php echo $this->HeadTitle() ."\n"; ?>
+	<base href="<?php echo Zend_Registry::get('config')->paths->admin->base; ?>/" />
+
+	<link rel="SHORTCUT ICON" href="<?php echo Zend_Registry::get('config')->paths->site->base; ?>/favicon.ico" />
+
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/resources/css/ext-all-notheme.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/resources/css/xtheme-gray-extend.css" />
+
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->BaseUrl(); ?>/styles/base_admin.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->BaseUrl(); ?>/styles/icons.css" />
+
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/adapter/ext/ext-base.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ext-all.js"></script>
+	<script type="text/javascript" src="<?php echo $this->BaseUrl(); ?>/scripts/ext-3.2.1/ext-lang-pt_BR.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+
+if ((typeof Range !== "undefined") && !Range.prototype.createContextualFragment) {
+	Range.prototype.createContextualFragment = function(html) {
+		var frag = document.createDocumentFragment();
+		div = document.createElement("div");
+		frag.appendChild(div);
+		div.outerHTML = html;
+		return frag;
+	};
+}
+
+Ext.onReady(function() {
+	Ext.QuickTips.init();
+	Ext.BLANK_IMAGE_URL = '<?php echo Zend_Registry::get('config')->paths->admin->base; ?>/scripts/ext-3.2.1/resources/images/default/s.gif';
+
+	Login = Ext.extend(Ext.Window, {
+		width: 430,
+		closable: false,
+		resizable: false,
+		constrain: true,
+		modal: true,
+
+		form: null,
+
+		initComponent: function() {
+			this.addEvents(
+				'autenticate',
+				'failure'
+			);
+
+			this.items = [{
+				border: false,
+				height: 145,
+				baseCls: 'div-login',
+				html: String.format('<img src="{0}" border="0" /><br />O acesso a esta área é restrito a usuários autorizados. <br />Por favor informe seu login e senha.', this.logoImage)
+			}, this.getForm()];
+
+			Login.superclass.initComponent.call(this);
+		},
+
+		getForm: function() {
+			if (!this.form) {
+				this.form = new Ext.form.FormPanel({
+					url: '<?php echo $this->BaseUrl(); ?>/index/login',
+					monitorValid: true,
+					labelWidth: 55,
+					buttonAlign: 'right',
+					border: false,
+					bodyStyle: 'padding: 20px 80px 10px 85px; text-align:center;',
+					keys: [{
+						key: Ext.EventObject.ENTER,
+						fn: function(button, event) {
+							this.form.btnLogin.fireEvent('click', this.form.btnLogin, event);
+						},
+						scope: this
+					}],
+					defaults: {
+						xtype: 'textfield',
+						minLength: 5,
+						maxLength: 15,
+						allowBlank: false
+					},
+					items: [{
+						fieldLabel: '<b>Usuário</b>',
+						name: 'usuario',
+						width: 190
+					}, {
+						inputType: 'password',
+						fieldLabel: '<b>Senha</b>',
+						name: 'senha',
+						width: 190
+					}, {
+						xtype: 'panel',
+						border: false,
+						bodyStyle: 'padding-top: 20px;',
+						html: '<div align="center">&copy; <?php echo $this->escape(Zend_Registry::get('config')->project); ?> - Todos os direitos reservados</div>'
+					}],
+					buttons: [{
+						ref: '../btnLogin',
+						text: 'Efetuar Login',
+						iconCls: 'icon-login-logar',
+						scale: 'medium',
+						formBind: true,
+						listeners: {
+							click: function(button, event) {
+							 	this.form.stopMonitoring();
+								button.setDisabled(true);
+								if (this.form.getForm().isValid()) {
+									this.form.getForm().submit({
+										waitMsg: 'Verificando usuário e senha...',
+										waitTitle: 'Autenticação',
+										failure: function() {
+											button.setDisabled(false);
+										 	this.form.startMonitoring();
+										},
+										scope: this
+									});
+								}
+							},
+							scope: this
+						}
+					}, {
+						ref: '../btnLostPassword',
+						text: 'Esqueci minha senha',
+						iconCls: 'icon-login-esqueci',
+						scale: 'medium',
+						listeners: {
+							click: function(button, event) {
+								var usuario = this.form.getForm().findField('usuario').getValue();
+								if (usuario.length) {
+									var pgb = Ext.Msg.wait('Aguarde... Tentando recuperar senha ...', button.text);
+									Ext.Ajax.request({
+										url: '<?php print $this->BaseUrl(); ?>/index/lost-password/usuario/'+usuario,
+										method: 'POST',
+										callback: function(options, success, response) {
+											var resp = Ext.util.JSON.decode(response.responseText);
+											if (resp) {
+												Ext.Msg.show({
+													title: 'Esqueci minha senha',
+													msg: resp.message,
+													icon: resp.success ? Ext.Msg.INFO : Ext.Msg.ERROR,
+													buttons: Ext.Msg.OK
+												});
+											} else {
+												Ext.Msg.show({
+													title: 'Esqueci minha senha',
+													msg: 'Erro ao reenviar senha. Por favor, tente novamente.',
+													icon: Ext.Msg.ERROR,
+													buttons: Ext.Msg.OK
+												});
+											}
+										},
+										scope: this
+									});
+								} else {
+									Ext.Msg.show({
+										title: button.text,
+										msg: 'Preencha o nome de usuário para recuperar a senha.',
+										icon: Ext.Msg.ERROR,
+										buttons: Ext.Msg.OK,
+										fn: function() {
+											this.form.getForm().findField('usuario').focus();
+										},
+										scope: this
+									});
+								}
+							},
+						scope: this
+						}
+					}],
+					listeners: {
+						actionfailed: function(form, action) {
+							this.fireEvent('failure', this, action.result);
+						},
+						actioncomplete: function(form, action) {
+							this.fireEvent('autenticate', this, action.result);
+						},
+						scope: this
+					}
+				});
+			}
+
+			return this.form;
+		}
+	});
+
+	var wndLogin = new Login({
+		title: 'Autenticação',
+		iconCls: 'icon-login-window',
+		modal: true,
+		logoImage: '<?php echo $this->BaseUrl(); ?>/images/logo/login.jpg',
+		focus: function() {
+			this.form.getForm().findField('usuario').focus();
+		},
+		listeners: {
+			autenticate: function(login, response) {
+				document.location.href = '<?php echo $this->BaseUrl(); ?>';
+			},
+			failure: function(login, response) {
+				Ext.Msg.show({
+					title: wndLogin.title,
+					msg: response.message,
+					buttons: Ext.Msg.OK,
+					icon: Ext.Msg.ERROR
+				});
+			}
+		}		
+	});
+	
+	window.onresize = function() { wndLogin.center(); };
+	
+	wndLogin.show();
+});
+
+</script>
+
+</body>
+</html>

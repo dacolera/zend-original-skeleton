@@ -1,0 +1,462 @@
+Ext.namespace('App', 'App.Sistema');
+
+App.Sistema.PerfisUsuarios = function() {
+	function buildContainer() {
+		var smPermissoes = new Ext.grid.CheckboxSelectionModel();
+
+		var container = new Ext.Panel({
+			layout: 'fit',
+			border: false,
+			tbar: [{
+				ref: '../btnInserirPerfil',
+				text: 'Inserir',
+				iconCls: 'icon-insert',
+				tooltip: {title: 'Perfis', text: 'Insere um novo perfil no sistema'},
+				hidden: <?php echo ($this->HasPermission('sistema_usuarios', 'perfil-insert') ? 'false' : 'true'); ?>,
+				listeners: {
+					click: function(button, event) {
+						if (!button.hidden && !button.disabled) {
+							App.Application.loadModule({
+								name: 'App.Sistema.PerfisUsuarios.Perfil',
+								url: '<?php echo $this->BaseUrl(); ?>/sistema_usuarios/perfil-insert',
+								callback: function() {
+									var wndPerfil = App.Sistema.PerfisUsuarios.Perfil.create(container.getEl());
+									wndPerfil.formPerfil.getForm().on('actioncomplete', function(form, action) {
+										if (action.type == 'submit') {
+											App.Application.Message({
+												title: wndPerfil.title,
+												msg: form.errorReader.jsonData.message,
+												target: button.getEl()
+											});
+											wndPerfil.close();
+											container.gridPerfisUsuarios.getRootNode().reload();
+										}
+									}, this);
+									wndPerfil.show(button.getEl());
+								},
+								scope: this
+							});
+						}
+					},
+					scope: this
+				}
+			}, {
+				ref: '../btnEditarPerfil',
+				text: 'Editar',
+				iconCls: 'icon-update',
+				tooltip: {title: 'Perfis', text: 'Altera os dados do perfil selecionado'},
+				hidden: <?php echo ($this->HasPermission('sistema_usuarios', 'perfil-update') ? 'false' : 'true'); ?>,
+				disabled: true,
+				listeners: {
+					click: function(button, event) {
+						if (!button.hidden && !button.disabled) {
+							App.Application.loadModule({
+								name: 'App.Sistema.PerfisUsuarios.Perfil',
+								url: '<?php echo $this->BaseUrl(); ?>/sistema_usuarios/perfil-update',
+								callback: function() {
+									var wndPerfil = App.Sistema.PerfisUsuarios.Perfil.create(container.getEl());
+									wndPerfil.formPerfil.getForm().on('actioncomplete', function(form, action) {
+										if (action.type == 'submit') {
+											App.Application.Message({
+												title: wndPerfil.title,
+												msg: form.errorReader.jsonData.message,
+												target: button.getEl()
+											});
+											wndPerfil.close();
+											container.gridPerfisUsuarios.getRootNode().reload();
+										}
+									}, this);
+									wndPerfil.show(button.getEl(), function() {
+										wndPerfil.formPerfil.getForm().load({
+											url: '<?php echo $this->BaseUrl(); ?>/sistema_usuarios/perfil-update',
+											params: {
+												load: true,
+												per_idPerfil: container.gridPerfisUsuarios.getSelectionModel().getSelectedNode().attributes.idPerfil
+											},
+											failure: function(form, action) {
+												Ext.Msg.show({
+													title: wndPerfil.title,
+													msg: form.reader.jsonData.message,
+													icon: Ext.Msg.ERROR,
+													buttons: Ext.Msg.OK,
+													fn: function() {
+														wndPerfil.close();
+													},
+													scope: this
+												});
+											},
+											scope: this
+										});
+									}, this);
+								},
+								scope: this
+							});
+						}
+					},
+					scope: this
+				}
+			}, {
+				ref: '../btnRemoverPerfil',
+				text: 'Remover',
+				iconCls: 'icon-delete',
+				tooltip: {title: 'Perfis', text: 'Remove o perfil selecionado'},
+				hidden: <?php echo ($this->HasPermission('sistema_usuarios', 'perfil-delete') ? 'false' : 'true'); ?>,
+				disabled: true,
+				listeners: {
+					click: function(button, event) {
+						if (!button.hidden && !button.disabled) {
+							var registro = container.gridPerfisUsuarios.getSelectionModel().getSelectedNode();
+							Ext.Msg.show({
+								title: 'Remover Perfil',
+								msg: String.format('Deseja remover o perfil <b>{0}</b> e todos os seus usuários?', registro.attributes.nome),
+								icon: Ext.Msg.QUESTION,
+								buttons: Ext.Msg.YESNO,
+								fn: function(btnMsg, evtMsg) {
+									if ('YES' == btnMsg.toUpperCase()) {
+										container.getEl().mask('Removendo perfil...', 'x-mask-loading');
+										Ext.Ajax.request({
+											url: '<?php echo $this->BaseUrl(); ?>/sistema_usuarios/perfil-delete',
+											params: {idPerfil: registro.attributes.idPerfil},
+											method: 'GET',
+											callback: function(succes, options, response) {
+												var resp = Ext.util.JSON.decode(response.responseText);
+												container.getEl().unmask();
+												App.Application.Message({
+													title: 'Remover Perfil',
+													msg: resp.message,
+													target: button.getEl()
+												});
+												container.gridPerfisUsuarios.getRootNode().reload();
+											},
+											scope: this
+										});
+									}
+								},
+								scope: this
+							});
+						}
+					},
+					scope: this
+				}
+			}, '-', {
+				ref: '../btnInserirUsuario',
+				text: 'Inserir',
+				iconCls: 'icon-user-insert',
+				tooltip: {title: 'Usuários', text: 'Insere um novo usuário no perfil selecionado'},
+				disabled: true,
+				hidden: <?php echo ($this->HasPermission('sistema_usuarios', 'usuario-insert') ? 'false' : 'true'); ?>,
+				listeners: {
+					click: function(button, event) {
+						if (!button.hidden && !button.disabled) {
+							App.Application.loadModule({
+								name: 'App.Sistema.PerfisUsuarios.Usuario',
+								url: '<?php echo $this->BaseUrl(); ?>/sistema_usuarios/usuario-insert',
+								callback: function() {
+									var wndUsuario = App.Sistema.PerfisUsuarios.Usuario.create(container.getEl());
+									wndUsuario.formUsuario.getForm().findField('usr_idPerfil').setValue(
+										container.gridPerfisUsuarios.getSelectionModel().getSelectedNode().attributes.idPerfil
+									);
+									wndUsuario.formUsuario.getForm().on('actioncomplete', function(form, action) {
+										if (action.type == 'submit') {
+											App.Application.Message({
+												title: wndUsuario.title,
+												msg: form.errorReader.jsonData.message,
+												target: button.getEl()
+											});
+											wndUsuario.close();
+											container.gridPerfisUsuarios.getRootNode().reload();
+										}
+									}, this);
+									wndUsuario.show(button.getEl());
+								},
+								scope: this
+							});
+						}
+					},
+					scope: this
+				}
+			}, {
+				ref: '../btnEditarUsuario',
+				text: 'Editar',
+				iconCls: 'icon-user-update',
+				tooltip: {title: 'Usuários', text: 'Altera os dados do usuário selecionado'},
+				disabled: true,
+				hidden: <?php echo ($this->HasPermission('sistema_usuarios', 'usuario-update') ? 'false' : 'true'); ?>,
+				listeners: {
+					click: function(button, event) {
+						if (!button.hidden && !button.disabled) {
+							App.Application.loadModule({
+								name: 'App.Sistema.PerfisUsuarios.Usuario',
+								url: '<?php echo $this->BaseUrl(); ?>/sistema_usuarios/usuario-update',
+								callback: function() {
+									var wndUsuario = App.Sistema.PerfisUsuarios.Usuario.create(container.getEl());
+									wndUsuario.formUsuario.getForm().on('actioncomplete', function(form, action) {
+										if (action.type == 'submit') {
+											App.Application.Message({
+												title: wndUsuario.title,
+												msg: form.errorReader.jsonData.message,
+												target: button.getEl()
+											});
+											wndUsuario.close();
+											container.gridPerfisUsuarios.getRootNode().reload();
+										}
+									}, this);
+									wndUsuario.show(button.getEl(), function() {
+										wndUsuario.formUsuario.getForm().load({
+											url: '<?php echo $this->BaseUrl(); ?>/sistema_usuarios/usuario-update',
+											params: {
+												load: true,
+												usr_idUsuario: container.gridPerfisUsuarios.getSelectionModel().getSelectedNode().attributes.idUsuario
+											},
+											failure: function(form, action) {
+												Ext.Msg.show({
+													title: wndUsuario.title,
+													msg: form.reader.jsonData.message,
+													icon: Ext.Msg.ERROR,
+													buttons: Ext.Msg.OK,
+													fn: function() {
+														wndUsuario.close();
+													},
+													scope: this
+												});
+											},
+											scope: this
+										});
+									}, this);
+								},
+								scope: this
+							});
+						}
+					},
+					scope: this
+				}
+			}, {
+				ref: '../btnRemoverUsuario',
+				text: 'Remover',
+				iconCls: 'icon-user-delete',
+				tooltip: {title: 'Usuários', text: 'Remove o usuário selecionado'},
+				disabled: true,
+				hidden: <?php echo ($this->HasPermission('sistema_usuarios', 'usuario-delete') ? 'false' : 'true'); ?>,
+				listeners: {
+					click: function(button, event) {
+						if (!button.hidden && !button.disabled) {
+							var registro = container.gridPerfisUsuarios.getSelectionModel().getSelectedNode();
+							Ext.Msg.show({
+								title: 'Remover Usuário',
+								msg: String.format('Deseja remover o usuário <b>{0}</b>?', registro.attributes.nome),
+								icon: Ext.Msg.QUESTION,
+								buttons: Ext.Msg.YESNO,
+								fn: function(btnMsg, evtMsg) {
+									if ('YES' == btnMsg.toUpperCase()) {
+										container.getEl().mask('Removendo usuário...', 'x-mask-loading');
+										Ext.Ajax.request({
+											url: '<?php echo $this->BaseUrl(); ?>/sistema_usuarios/usuario-delete',
+											params: {idUsuario: registro.attributes.idUsuario},
+											method: 'GET',
+											callback: function(succes, options, response) {
+												var resp = Ext.util.JSON.decode(response.responseText);
+												container.getEl().unmask();
+												App.Application.Message({
+													title: 'Remover Usuário',
+													msg: resp.message,
+													target: button.getEl()
+												});
+												container.gridPerfisUsuarios.getRootNode().reload();
+											},
+											scope: this
+										});
+									}
+								},
+								scope: this
+							});
+						}
+					},
+					scope: this
+				}
+			}, '-', {
+				ref: '../btnGrantPerms',
+				text: 'Salvar Permissões',
+				iconCls: 'icon-save-small',
+				tooltip: {title: 'Permissões', text: 'Salvar as permissões do perfil selecionado'},
+				disabled: true,
+				hidden: <?php echo ($this->HasPermission('sistema_usuarios', 'perfil-grant-perms') ? 'false' : 'true'); ?>,
+				listeners: {
+					click: function(button, event) {
+						if (!button.hidden && !button.disabled) {
+							var savePerms = function() {
+								container.getEl().mask('Salvando Permissões...', 'x-mask-loading');
+								var items = smPermissoes.getSelections();
+								var newPerms = [];
+								for (var i = 0; i < items.length; i++) {
+									newPerms.push(items[i].get('codigo'));
+								}
+								Ext.Ajax.request({
+									url: '<?php echo $this->BaseUrl(); ?>/sistema_usuarios/perfil-grant-perms/',
+									params: {
+										idPerfil: container.gridPerfisUsuarios.getSelectionModel().getSelectedNode().attributes.idPerfil,
+										perms: newPerms.join(',')
+									},
+									callback: function(options, success, response) {
+										var resp = Ext.util.JSON.decode(response.responseText);
+										App.Application.Message({
+											title: 'Permissões do Perfil',
+											msg: resp.message,
+											target: button.getEl()
+										});
+										container.getEl().unmask();
+									},
+									scope: this
+								});
+							};
+
+							if (container.gridPerfisUsuarios.getSelectionModel().getSelectedNode()) {
+								if (smPermissoes.getSelections() <= 0) {
+									Ext.Msg.show({
+										title: 'Permissões do Perfil',
+										msg: String.format('Nenhuma permissão foi atribuida ao perfil "{0}"!<br /><br />Deseja salvar alterações mesmo assim?', gridPerfis.getSelectionModel().getSelectedNode().attributes.nome),
+										buttons: Ext.Msg.YESNO,
+										icon: Ext.Msg.QUESTION,
+										fn: function(btn, evt) {
+											if ('YES' == btn.toUpperCase()) { savePerms(); }
+										},
+										scope: this
+									});
+								} else {
+									savePerms();
+								}
+							}
+						}
+					},
+					scope: this
+				}
+			}],
+			items: [{
+				xtype: 'panel',
+				layout: 'border',
+				border: false,
+				items: [
+					new Ext.ux.tree.TreeGrid({
+						ref: '../gridPerfisUsuarios',
+						region: 'west',
+						title: 'Perfis e Usuários',
+						margins: '0 5px 0 0',
+						border: false,
+						cls: 'panel-border-right',
+						width: 660,
+						dataUrl: '<?php echo $this->BaseUrl(); ?>/sistema_usuarios/index/load/usuarios',
+						columns:[{
+							header: 'Nome',
+							dataIndex: 'nome',
+							width: 230
+						}, {
+							header: 'Login',
+							dataIndex: 'login',
+							width: 120
+						}, {
+							header: 'E-mail',
+							dataIndex: 'email',
+							width: 200
+						}, {
+							header: 'Status',
+							dataIndex: 'status',
+							width: 100
+						}],
+						selModel: new Ext.tree.DefaultSelectionModel({
+							listeners: {
+								selectionchange: function(selection, node) {
+									container.btnEditarPerfil.setDisabled(!node || node.isLeaf());
+									container.btnRemoverPerfil.setDisabled(!node || node.isLeaf());
+									container.btnInserirUsuario.setDisabled(!node || node.isLeaf());
+									container.btnEditarUsuario.setDisabled(!node || !node.isLeaf());
+									container.btnRemoverUsuario.setDisabled(!node || !node.isLeaf());
+									container.btnGrantPerms.setDisabled(!node || node.isLeaf());
+									if (node && !node.isLeaf()) {
+										smPermissoes.clearSelections();
+										container.gridPermissoes.getStore().load({
+											params: {idPerfil: node.attributes.idPerfil}
+										});
+									} else {
+										container.gridPermissoes.getStore().removeAll();
+									}
+								},
+								scope: this
+							}
+						}),
+						tools: [{
+							id: 'refresh',
+							tooltip: 'Recarrega a lista de perfis e usuários',
+							handler: function(event, toolEl, panel, config) {
+								container.gridPerfisUsuarios.getRootNode().reload();
+							},
+							scope: this
+						}],
+						listeners: {
+							beforeload: function(node) {
+								if (node == container.gridPerfisUsuarios.getRootNode()) {
+									container.gridPerfisUsuarios.getEl().mask('Carregando perfis e usuários...', 'x-mask-loading');
+								}
+							},
+							load: function(node) {
+								if (node == container.gridPerfisUsuarios.getRootNode()) {
+									container.gridPerfisUsuarios.getEl().unmask();
+								}
+							},
+							scope: this
+						}
+					}),
+					new Ext.grid.GridPanel({
+						ref: '../gridPermissoes',
+						region: 'center',
+						title: 'Permissões do Perfil',
+						border: false,
+						cls: 'panel-border-left',
+						enableHdMenu: false,
+						loadMask: {msg: 'Carregando permissões...'},
+						store: new Ext.data.GroupingStore({
+							proxy: new Ext.data.HttpProxy({url: '<?php echo $this->BaseUrl(); ?>/sistema_usuarios/index/load/permissoes'}),
+							reader: new Ext.data.JsonReader({
+								id: 'codigo',
+								root: 'acoes'
+							}, [
+								{name: 'codigo', mapping: 'codigo'},
+								{name: 'modulo', mapping: 'modulo'},
+								{name: 'acao', mapping: 'acao'},
+								{name: 'permissao', mapping: 'permissao', type: 'boolean'}
+							]),
+							sortInfo: false,
+							groupField: 'modulo'
+						}),
+						columns: [
+							smPermissoes,
+							{header: 'Permissão', dataIndex: 'permissao', width: 70, hidden: true,
+								renderer: function(value, cell, record, rowIndex, colIndex, store) {
+									if (value == true) smPermissoes.selectRow(rowIndex, true);
+								}
+							},
+							{header: 'Módulo', dataIndex: 'modulo', width: 120, sortable: true, hidden: true},
+							{header: 'Ação', dataIndex: 'acao', width: 120, sortable: true, resizable: false}
+						],
+						view: new Ext.grid.GroupingView({
+							forceFit: true,
+							emptyText: 'Selecione o perfil para exibir as permissões',
+							startCollapsed: false
+						}),
+						sm: smPermissoes
+					})
+				]
+			}]
+		});
+
+		return container;
+	}
+
+	return {
+		init: function() {
+			App.Application.addTabPanel({
+				title: 'Perfis e Usuários',
+				iconCls: 'icon-usuarios-small',
+				items: buildContainer()
+			});
+		}
+	}
+}();

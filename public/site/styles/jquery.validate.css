@@ -1,0 +1,18 @@
+@CHARSET "ISO-8859-1";
+
+input.error, select.error, textarea.error {
+	background-image:url("../images/errorForm.png") !important;		
+	background-position:99% center !important;
+	background-repeat:no-repeat !important;
+	background-color:#FEF1EC !important;
+
+	border:solid 1px #CD0A0A !important;
+	color:#CD0A0A !important;
+	outline: #FEF1EC 3px !important;
+}
+select.error{background-position:95% center !important; height: 30px !important;}
+textarea.error{background-position:99.5% 5px !important;}
+
+label.error {
+	display:none !important;
+}
