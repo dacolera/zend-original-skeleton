@@ -26,24 +26,6 @@
     <script type="text/javascript" src="http://malsup.github.com/jquery.cycle.all.js"></script>
     <?php echo $this->HeadScript() ."\n"; ?>
 	<?php echo $this->HeadLink() ."\n"; ?>
-    <script>
-            $(function() {
-                $('#ei-slider').eislideshow({
-					animation			: 'center',
-					autoplay			: true,
-					slideshow_interval	: 3000,
-					titlesFactor		: 0
-                }); 
-			//internal cycles
-                $('#s2').cycle({
-          	      fx:     'fade',
-          	      speed:  'fast',
-          	      timeout: 0,
-          	      next:   '#next2',
-          	      prev:   '#prev2'
-          	    });
-            });
-    </script>
                   
 </head>
 <body>
