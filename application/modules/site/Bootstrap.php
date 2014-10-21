@@ -36,9 +36,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	protected function _initRegistry()
 	{
 		$config = new Zend_Config(require_once APPLICATION_ROOT . '/configs/config.php');
-		$configSistema = new Zend_Config(require_once APPLICATION_ROOT . '/configs/configuracao.php');
+		//$configSistema = new Zend_Config(require_once APPLICATION_ROOT . '/configs/configuracao.php');
 		Zend_Registry::set('config', $config);
-		Zend_Registry::set('configInfo', $configSistema);
+		//Zend_Registry::set('configInfo', $configSistema);
 	}
 
 	protected function _initFrontController()
@@ -102,52 +102,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		// -------------------------------
 		
 		
-		$router->addRoute(
-			'projetos-especiais',
+		/*$router->addRoute(
+			'id da rota',
 			new Zend_Controller_Router_Route(
-				'projetos-especiais',
-				array('controller' => 'index', 'action' => 'projetos-especiais')
+				'o que vai ser digitado na url',
+				array('controller' => 'nome do controlador', 'action' => 'nome da acao')
 			)
-		);
+		);*/
 		
-		$router->addRoute(
-			'servicos',
-			new Zend_Controller_Router_Route(
-				'servicos',
-				array('controller' => 'servicos', 'action' => 'teleview')
-			)
-		);
 		
-		$router->addRoute(
-			'fale-conosco',
-			new Zend_Controller_Router_Route(
-				'fale-conosco',
-				array('controller' => 'index', 'action' => 'fale-conosco')
-			)
-		);
-		
-		$router->addRoute(
-			'faq',
-			new Zend_Controller_Router_Route(
-				'faq',
-				array('controller' => 'index', 'action' => 'faq')
-			)
-		);
-		
-		$router->addRoute(
-			'residencial',
-			new Zend_Controller_Router_Route(
-				'solucoes',
-				array('controller' => 'solucoes', 'action' => 'monitoramento-residencial')
-			)
-		);
-		
-		$router->addRoute(
-			'sobre-empresa',
-			new Zend_Controller_Router_Route(
-				'institucional',
-				array('controller' => 'institucional', 'action' => 'sobre-empresa')
-			)
-		);
 	}			
 }

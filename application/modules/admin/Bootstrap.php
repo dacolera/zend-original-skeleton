@@ -36,9 +36,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	protected function _initRegistry()
 	{
 		$config = new Zend_Config(require_once APPLICATION_ROOT . '/configs/config.php');
-		$configSistema = new Zend_Config(require_once APPLICATION_ROOT . '/configs/configuracao.php');
+		//$configSistema = new Zend_Config(require_once APPLICATION_ROOT . '/configs/configuracao.php');
 		Zend_Registry::set('config', $config);
-		Zend_Registry::set('configInfo', $configSistema);
+		//Zend_Registry::set('configInfo', $configSistema);
 	}
 
 	protected function _initFrontController()

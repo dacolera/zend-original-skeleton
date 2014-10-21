@@ -1,9 +1,9 @@
 <?php
-$BASE_HREF = 'http://localhost/teleatlantic';
+$BASE_HREF = 'http://localhost:8888/skeleton';
 
 return array(
-	'project' => 'Teleatlantic',
-	'projectTitle' => "Teleatlantic",
+	'project' => 'Skeleton',
+	'projectTitle' => "Skeleton",
 	'paths' => array(
 		'admin' => array(
 			'root' => APPLICATION_ROOT .'/modules/admin/views',
