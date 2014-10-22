@@ -7,9 +7,9 @@ class App_Validate_CpfCnpj extends Zend_Validate_Abstract
 	const INVALID_CNPJ = 'InvalidCNPJ';
 
 	protected $_messageTemplates = array(
-		self::NOT_RECOGNIZED => "'%value%' não parece ser um CPF ou CNPJ válido",
-		self::INVALID_CPF => "CPF '%value%' inválido",
-		self::INVALID_CNPJ => "CNPJ '%value%' inválido"
+		self::NOT_RECOGNIZED => "'%value%' n‹o parece ser um CPF ou CNPJ v‡lido",
+		self::INVALID_CPF => "CPF '%value%' inv‡lido",
+		self::INVALID_CNPJ => "CNPJ '%value%' inv‡lido"
 	);
 
 	public function isValid($value)

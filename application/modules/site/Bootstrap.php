@@ -102,13 +102,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		// -------------------------------
 		
 		
-		/*$router->addRoute(
-			'id da rota',
+		$router->addRoute(
+			'index-detalhe',
 			new Zend_Controller_Router_Route(
-				'o que vai ser digitado na url',
-				array('controller' => 'nome do controlador', 'action' => 'nome da acao')
+				'detalhe',
+				array('controller' => 'index', 'action' => 'detalhe')
 			)
-		);*/
+		);
 		
 		
 	}			

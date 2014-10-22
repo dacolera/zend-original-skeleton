@@ -35,7 +35,7 @@ App.Application = function() {
     
 	function showError(erro) {
 		var wndError = new Ext.Window({
-			title: 'Erro na aplicaÁ„o',
+			title: 'Erro na aplicação',
 			iconCls: 'icon-cancel-small',
 			modal: true,
 			constrain: true,
@@ -171,12 +171,12 @@ App.Application = function() {
 					}],
 					bbar: new Ext.ux.StatusBar({
 						id: 'app-statusbar',
-						defaultText: 'MÛdulo Administrativo',
+						defaultText: 'Módulo Administrativo',
 						items: [
 							'-',
 							String.format('<table><tr><td><img src="{0}/images/icons/small/user-logged.png" border="0" /></td><td class="usr-logado">&nbsp;{1}&nbsp;</td></tr></table>', config.baseUrl, config.usuario.nome),
 							'-',
-							'<table><tr><td class="padrao"><a class="byvm2" href="http://www.vm2.com.br" target="_blank" title="AgÍncia VM2">by VM2</a></td></tr></table>'
+							'<table><tr><td class="padrao"><a class="byvm2" href="http://www.vm2.com.br" target="_blank" title="Agência VM2">by VM2</a></td></tr></table>'
 						]
 					})
 				}]
