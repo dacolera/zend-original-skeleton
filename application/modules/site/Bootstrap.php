@@ -103,11 +103,35 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		
 		
 		$router->addRoute(
-			'index-detalhe',
+			'bootstrap-elements',
 			new Zend_Controller_Router_Route(
-				'detalhe',
-				array('controller' => 'index', 'action' => 'detalhe')
+				'bootstrap-elements',
+				array('controller' => 'index', 'action' => 'bootstrap-elements')
 			)
+		);
+		
+		$router->addRoute(
+				'forms',
+				new Zend_Controller_Router_Route(
+						'forms',
+						array('controller' => 'index', 'action' => 'forms')
+				)
+		);
+		
+		$router->addRoute(
+				'charts',
+				new Zend_Controller_Router_Route(
+						'charts',
+						array('controller' => 'index', 'action' => 'charts')
+				)
+		);
+		
+		$router->addRoute(
+				'tables',
+				new Zend_Controller_Router_Route(
+						'tables',
+						array('controller' => 'index', 'action' => 'tables')
+				)
 		);
 		
 		

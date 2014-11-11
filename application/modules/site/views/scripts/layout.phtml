@@ -4,22 +4,47 @@
     <base href="<?php echo Zend_Registry::get('config')->paths->site->base; ?>/" />
 
 	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
 	<meta name="author" content="<?php echo Zend_Registry::get('config')->project; ?>" />
 	<link rel="shortcut icon" href="images/favicon.ico">
-	<link rel="stylesheet" type="text/css" href="styles/main.css" />
 	<link rel="stylesheet" type="text/css" href="styles/owl.carousel.css" />
 	<link rel="stylesheet" type="text/css" href="styles/owl.theme.css" />
 	<link rel="stylesheet" type="text/css" href="styles/owl.transitions.css" />
-	<link rel="stylesheet" type="text/css" href="styles/desktop.css" />
+	
+	
+	<!-- Bootstrap Core CSS -->
+    <link href="styles/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="styles/sb-admin.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="styles/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="styles/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	
 	<?php echo $this->HeadMeta(); ?>
 	<link rel="stylesheet" type="text/css" href="styles/demo-style.css" />
-	<!--[if IE 8]>
-		<link rel="stylesheet" href="styles/ie.css" />
-	<![endif]-->
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 	<?php echo $this->HeadStyle() ."\n"; ?>
+	<!-- jQuery -->
+    <script src="scripts/lib/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="scripts/lib/bootstrap.min.js"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <script src="scripts/lib/plugins/morris/raphael.min.js"></script>
+    <script src="scripts/lib/plugins/morris/morris.min.js"></script>
+    <script src="scripts/lib/plugins/morris/morris-data.js"></script>
 	<script type="text/javascript" src="scripts/lib/modernizr.js"></script>
-	<script type="text/javascript" src="scripts/lib/jquery-1.9.1.js"></script>
 	<script type="text/javascript" src="scripts/lib/owl.carousel.min.js"></script>
     <script type="text/javascript" src="scripts/lib/jquery.eislideshow.js"></script>
     <script type="text/javascript" src="scripts/lib/jquery.easing.1.3.js"></script>
@@ -29,8 +54,12 @@
                   
 </head>
 <body>
-	<?php echo $this->render('topo.phtml'); ?>
-	<?php echo $this->layout()->content . "\n"; ?>
-	<?php echo $this->render('rodape.phtml'); ?>
+	<div id="wrapper">
+		<?php echo $this->render('topo.phtml'); ?>
+		<div id="page-wrapper">
+			<?php echo $this->layout()->content . "\n"; ?>
+		</div>
+		<?php echo $this->render('rodape.phtml'); ?>
+	</div>	
 </body>
 </html>
