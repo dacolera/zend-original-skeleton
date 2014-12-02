@@ -1,5 +1,5 @@
 <?php
-$BASE_HREF = 'http://localhost:8888/skeleton';
+$BASE_HREF = 'http://localhost/skeleton';
 
 return array(
 	'project' => 'Skeleton',
