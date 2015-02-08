@@ -19,7 +19,7 @@ defined('APPLICATION_ROOT') ||
 
 defined('APPLICATION_PATH') ||
 	define('APPLICATION_PATH', sprintf('%s%smodules%s%s', APPLICATION_ROOT, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, (getenv('MODULE') ? getenv('MODULE') : 'site')));
-
+	
 defined('APPLICATION_ENV') ||
 	define('APPLICATION_ENV', (getenv('ENVIRONMENT') ? getenv('ENVIRONMENT') : 'production'));
 

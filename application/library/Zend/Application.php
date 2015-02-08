@@ -399,7 +399,6 @@ class Zend_Application
             default:
                 throw new Zend_Application_Exception('Invalid configuration file provided; unknown config type');
         }
-
         return $config->toArray();
     }
 }

@@ -1,0 +1,22 @@
+<script type="text/javascript">
+    $(function(){
+        $('button').click(function(){
+            window.location.reload();
+        });
+    });
+</script>
+<div class="center">
+    <h1>Cálculo de Hipotenuza</h1>
+    <?php if(!$this->app){?>
+    <h3><?php echo $this->msg;  ?></h3>
+    <form action="" method="post" id="ff">
+        <label>Lado 1<input type="text" name="lado1" /><br /></label>
+        <label>Lado 2<input type="text" name="lado2" /><br /></label>
+        <input type="submit" value="Calcular" />
+    </form>
+    <?php } else{ ?>
+
+        <p>A medida da hipotenuza é de <?php echo $this->app?>.</p>
+        <h3><?php echo $this->msg;  ?>&nbsp;&nbsp;&nbsp;&nbsp;<button></button></h3>
+   <?php } ?>
+</div>
